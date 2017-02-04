@@ -18,34 +18,49 @@ bool checkFileType(std::string filename){
 		return false;
 }
 
-int main(int agrc, char * argv[]){
-
-	//make a stack to handle command line arguments
-	//right now, we will assume there are no switches
+int main(int argc, char * argv[]){
 	
-	//Since I am not considering any flags atm, assume
-	//argv[1] is the .vts file
+	switch(argc){
+		//case where there is no command line arguments
+		case 1:{
+			std::string input;
+			while(true){
+				std::cout << "vtscript> ";
+				std::cin >> input;			
+			}
+				
+			break;
+		} 
+		
+		//case where the only command line argument is a file to interperet 
+		case 2: {
+			//check if it is the correct file type
+			if(!checkFileType(argv[1])){
+				std::cout << "ERROR: Incorrect file type" << std::endl;
+				return EXIT_FAILURE;
+			}
 
-	//check if it is the correct file type
-	if(!checkFileType(argv[1])){
-		std::cout << "ERROR: Incorrect file type" << std::endl;
-		return EXIT_FAILURE;
-	}
-
-	std::ifstream inFile (argv[1]);
-	if(inFile.is_open()){	
-		while(!inFile.eof()){
-			std::string line;
-			getline(inFile, line);
-			std::cout << "Line" << std::endl;
+			std::ifstream inFile (argv[1]);
+			if(inFile.is_open()){	
+				while(!inFile.eof()){
+					std::string line;
+					getline(inFile, line);
+					std::cout << "Line" << std::endl;
+				}
+			}  	
+			else{
+				std::cout << "File does not exist" << std::endl;
+				return EXIT_FAILURE;
+			}
+			break;
 		}
-	}  	
-	else{
-		std::cout << "File does not exist" << std::endl;
-		return EXIT_FAILURE;
+
+		//all other cases
+		default: {
+			break;
+		}	
 	}
-	
+
 
 	return EXIT_SUCCESS;
-
 }
