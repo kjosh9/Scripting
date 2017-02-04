@@ -2,9 +2,8 @@
 #include <fstream>
 #include <string.h>
 
-//#include "expression.hpp"
-//#include "interpreter.hpp"
-//#include "tokenize.hpp"
+#include "interpreter.hpp"
+#include "tokenize.hpp"
 
 //check the file type and return a boolean
 bool checkFileType(std::string filename){
@@ -19,6 +18,8 @@ bool checkFileType(std::string filename){
 }
 
 int main(int argc, char * argv[]){
+
+	Interpreter reader;
 	
 	switch(argc){
 		//case where there is no command line arguments

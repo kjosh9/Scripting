@@ -1,12 +1,11 @@
 #ifndef INTERPRETER_HPP
 #define INTERPRETER_HPP
 
-#include <interpreter_semantic_error.hpp>
+#include "interpreter_semantic_error.hpp"
+#include "expression.hpp"
 
 
-class Intepreter{
-
-
+class Interpreter{
 
 public:
 
@@ -20,7 +19,7 @@ public:
 	// Evaluate the current AST and return the resulting Expression
 	// throws InterpreterSemanticError if a semantic error is encountered
 	// the exception message string should document the nature of the semantic error
-	Expression eval();
+	//Expression eval();
 
 	
 

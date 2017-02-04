@@ -1,6 +1,8 @@
 #ifndef EXPRESSION_HPP
 #define EXPRESSION_HPP
 
+template <typename T>
+
 class Expression{
 
 public:
@@ -19,6 +21,11 @@ public:
 	// Equality operator for two Expressions, to expression are equal if they have the same
 	// type, atom value, and number of arguments
 	bool operator==(const Expression & exp) const noexcept;
+
+
+private: 
+
+	T* data;
 
 };
 #endif // EXPRESSION_HPP
