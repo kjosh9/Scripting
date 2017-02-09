@@ -2,7 +2,7 @@
 
 
 Interpreter::Interpreter(){
-
+	
 }
 
 bool Interpreter::parse(std::istream & expression) noexcept
@@ -12,10 +12,10 @@ bool Interpreter::parse(std::istream & expression) noexcept
 
 }
 
-Expression Interpreter::eval(){
+//Expression Interpreter::eval(){
 
 
-}
+//}
 
 
 
