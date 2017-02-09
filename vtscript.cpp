@@ -2,8 +2,8 @@
 #include <fstream>
 #include <string.h>
 
-#include "interpreter.hpp"
-#include "tokenize.hpp"
+//#include "interpreter.hpp"
+//#include "tokenize.hpp"
 
 //check the file type and return a boolean
 bool checkFileType(std::string filename){
@@ -19,13 +19,16 @@ bool checkFileType(std::string filename){
 
 int main(int argc, char * argv[]){
 
-	Interpreter reader;
+	//Interpreter reader;
 	
 	switch(argc){
 		//case where there is no command line arguments
 		case 1:{
 			std::string input;
 			while(true){
+				
+				//put into the environment?
+			
 				std::cout << "vtscript> ";
 				std::cin >> input;			
 			}
@@ -58,6 +61,22 @@ int main(int argc, char * argv[]){
 
 		//all other cases
 		default: {
+	
+
+			std::string arg1 = argv[1];
+
+			std::cout << arg1 << std::endl;
+
+			if(arg1.compare("-e") == 0){
+				
+				//now use the interpreter
+
+			}	
+			else{	
+				std::cout <<"Incorrect input" << std::endl;
+				return EXIT_FAILURE;
+			}
+			
 			break;
 		}	
 	}
