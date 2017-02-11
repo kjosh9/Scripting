@@ -8,22 +8,19 @@
 
 TEST_CASE("Test Constructor", "[tokenize]"){
 	
-	TokenList* list = new TokenList();
+	//TokenList* list = new TokenList();
 
-	REQUIRE(list->empty());
+	//REQUIRE(list->empty());
 
 }
 
 
 TEST_CASE("Test createList w/ only spaces", "[tokenize]"){
 	
-	TokenList* list = new TokenList();
-
 	std::stringstream sim;
 	sim << "( " << "+ " << "a " << "( " << "- " << "4 " << ") " << ") ";
 
-	list->createList(sim);
-	std::queue<std::string> reList = list->returnList();
+	std::queue<std::string> reList = createList(sim);;
 
 	REQUIRE(reList.front() == "(");
 	reList.pop();
@@ -44,13 +41,10 @@ TEST_CASE("Test createList w/ only spaces", "[tokenize]"){
 
 TEST_CASE("Test createList w/ no spaces", "[tokenize]"){
 
-	TokenList* list = new TokenList();
-
 	std::stringstream sim;
 	sim << "(" << "+ " << "a" << "( " << "- " << "4 " << ")" << ")";
 
-	list->createList(sim);
-	std::queue<std::string> reList = list->returnList();
+	std::queue<std::string> reList = createList(sim);
 
 	REQUIRE(reList.front() == "(");
 	reList.pop();

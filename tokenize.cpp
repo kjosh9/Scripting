@@ -1,26 +1,12 @@
 #include "tokenize.hpp"
 
 
-//default constructor
-TokenList::TokenList(){}
-
-std::queue<std::string> TokenList::returnList(){
-	return data;
-}
-
-bool TokenList::empty(){
-	if(data.empty())
-		return true;
-	else 
-		return false;
-}
-
-
 // (+ a ( - 4 ))
 // "(", "+", "a", "(", "-", "4", ")", ")"
-bool TokenList::createList(std::stringstream& input){
+std::queue<std::string> createList(std::stringstream& input){
 	
 	char c;
+	std::queue<std::string> data;
 	while(!input.eof()){
 		std::string token;
 		input.get(c);	
@@ -31,7 +17,7 @@ bool TokenList::createList(std::stringstream& input){
 		}
 		//test here if c is a number
 	}
-	return true;
+	return data;
 }
 
 
