@@ -1,7 +1,17 @@
 #ifndef EXPRESSION_HPP
 #define EXPRESSION_HPP
 
+#include <string>
+
+
 template <typename T>
+struct ambiData{
+	T value;
+}
+
+
+/*this will need a destuctor and a copy contructor!!!!!!!!!!!!!!!!!!*/
+
 
 class Expression{
 
@@ -22,10 +32,9 @@ public:
 	// type, atom value, and number of arguments
 	bool operator==(const Expression & exp) const noexcept;
 
-
 private: 
-
-	T* data;
+	
+	ambiData data;
 
 };
 #endif // EXPRESSION_HPP
