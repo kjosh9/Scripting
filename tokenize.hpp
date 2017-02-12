@@ -5,6 +5,7 @@
 #include <queue>
 #include <sstream>
 #include <vector>
+#include <iostream>
 
 //This module should define the C++ types and code 
 // required to parse a vtscript program into an AST
@@ -15,11 +16,17 @@
 std::queue<std::string> createList(std::stringstream& input);
 
 
-typedef struct {
+typedef struct Node{
 	
 	//for now, let's just say the data type is a string	
 	std::string data;
+	
+	//will have any number of branches
 	std::vector<Node*> branches;
+
+	//point back up to make it easy on me
+	Node* top;
+	
 }Node;
 
 
@@ -36,7 +43,8 @@ public:
 	//Assemble the AST
 	bool assembleAST(std::queue<std::string> tokenList);
 	
-	//some way of presenting the data
+	//some ways of presenting the data
+	bool empty();
 
 private:
 	Node* root;
