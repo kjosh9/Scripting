@@ -21,3 +21,18 @@ std::queue<std::string> createList(std::stringstream& input){
 }
 
 
+AST::AST(){}
+
+AST::~AST(){}
+
+bool AST::assembleAST(std::queue<std::string> tokenList){
+	
+	//while(!tokenList.empty()){
+	//	if(		
+
+	//}
+}
+
+
+
+
