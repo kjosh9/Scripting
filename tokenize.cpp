@@ -3,15 +3,17 @@
 
 // (+ a ( - 4 ))
 // "(", "+", "a", "(", "-", "4", ")", ")"
-std::queue<std::string> createList(std::stringstream& input){
+std::queue<std::string> createList(std::istream& input){
 	
+	//current limitations: two digit numbers.
+
 	char c;
 	std::queue<std::string> data;
 	while(!input.eof()){
 		std::string token;
 		input.get(c);	
 		
-		if(c != ' ' && !input.eof()){
+		if(c != ' ' && c != '\n' && c != '\a'){
 			token = c;	
 			data.push(token);
 		}
@@ -36,7 +38,7 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 	while(!tokenList.empty()){
 		
 		//debugging help
-		std::cout << tokenList.front() << std::endl;
+		//std::cout << tokenList.front() << std::endl;
 		
 		if(tokenList.front() == "(" && root == nullptr){
 			//the next entry needs to be the root			

@@ -13,7 +13,7 @@
 //Take in the input file string and "Tokenize" to be in the 
 // format that we expect. Return true if successful, false if
 // the string cannot be tokenized.
-std::queue<std::string> createList(std::stringstream& input);
+std::queue<std::string> createList(std::istream& input);
 
 
 typedef struct Node{

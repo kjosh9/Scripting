@@ -3,7 +3,7 @@
 #include "catch.hpp"
 #include "tokenize.hpp"
 #include <string>
-#include <sstream>
+#include <istream>
 #include <queue>
 
 TEST_CASE("Test Constructor", "[AST]"){
@@ -16,8 +16,7 @@ TEST_CASE("Test Constructor", "[AST]"){
 
 TEST_CASE("Test createList w/ only spaces", "[tokenize]"){
 	
-	std::stringstream sim;
-	sim << "( " << "+ " << "a " << "( " << "- " << "4 " << ") " << ") ";
+	std::ifstream sim ("test.vts");
 
 	std::queue<std::string> reList = createList(sim);;
 
@@ -42,8 +41,7 @@ TEST_CASE("Test createList w/ only spaces", "[tokenize]"){
 
 TEST_CASE("Test createList w/ no spaces", "[tokenize]"){
 
-	std::stringstream sim;
-	sim << "(" << "+ " << "a" << "( " << "- " << "4 " << ")" << ")";
+	std::ifstream sim ("test.vts");
 
 	std::queue<std::string> reList = createList(sim);
 
@@ -69,16 +67,14 @@ TEST_CASE("Test createList w/ no spaces", "[tokenize]"){
 
 TEST_CASE("Test assembleAST", "[AST]"){
 
-		AST* tree = new AST();
+	AST* tree = new AST();
 	
-		std::stringstream sim;
-		sim << "(" << "+ " << "a" << "( " << "- " << "4 " << ")" << ") ";
+	std::ifstream sim ("test.vts");
 
-		std::queue<std::string> reList = createList(sim);	
+	std::queue<std::string> reList = createList(sim);	
+	tree->assembleAST(reList);
 
-		tree->assembleAST(reList);
-
-		REQUIRE(tree->empty() == false);
+	REQUIRE(tree->empty() == false);
 }
 
 
