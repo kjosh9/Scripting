@@ -3,14 +3,7 @@
 
 #include <string>
 
-
-template <typename T>
-struct ambiData{
-	T value;
-}
-
-
-/*this will need a destuctor and a copy contructor!!!!!!!!!!!!!!!!!!*/
+/*Will this will need a destuctor and a copy contructor?*/
 
 
 class Expression{
@@ -32,9 +25,28 @@ public:
 	// type, atom value, and number of arguments
 	bool operator==(const Expression & exp) const noexcept;
 
+
+	/*non-elegant solution*/
+	std::string dataType() const;
+
+	bool boolData() const;
+
+	std::string stringData() const;
+
+	double doubleData() const;
+	/*--------------------*/
+
 private: 
 	
-	ambiData data;
+	/*non-elegant solution*/
+	//as string that tells the data type
+	std::string _dataType;
+
+	//the actual data
+	bool _boolData;
+	std::string _stringData;
+	double _doubleData;
+	/*--------------------*/
 
 };
 #endif // EXPRESSION_HPP

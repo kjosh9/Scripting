@@ -12,15 +12,15 @@ TEST_CASE("Test Constructor", "[Expression]"){
 
 TEST_CASE("Test equality" , "[Expression]"){
 	
-	Expression* exp0 = new Expression("else");
-	Expression* exp1 = new Expression("something");
-	Expression* exp2 = new Expression("something");
-	Expression* exp3 = new Expression((double)10);
-	Expression* exp4 = new Expression((double)11);
-	Expression* exp5 = new Expression((double)10);
-	Expression* exp6 = new Expression((bool)false);
-	Expression* exp7 = new Expression((bool)false);
-	Expression* exp8 = new Expression((bool)true);
+	Expression exp0 = Expression((std::string)"else");
+	Expression exp1 = Expression((std::string)"something");
+	Expression exp2 = Expression((std::string)"something");
+	Expression exp3 = Expression((double)10);
+	Expression exp4 = Expression((double)11);
+	Expression exp5 = Expression((double)10);
+	Expression exp6 = Expression((bool)false);
+	Expression exp7 = Expression((bool)false);
+	Expression exp8 = Expression((bool)true);
 	
 	//cases where we expect the same expression
 	REQUIRE(exp1 == exp2);
