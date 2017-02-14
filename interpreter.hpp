@@ -3,7 +3,11 @@
 
 #include "interpreter_semantic_error.hpp"
 #include "expression.hpp"
+#include "tokenize.hpp"
 
+#include <string>
+#include <queue>
+#include <istream>
 
 class Interpreter{
 
@@ -19,11 +23,15 @@ public:
 	// Evaluate the current AST and return the resulting Expression
 	// throws InterpreterSemanticError if a semantic error is encountered
 	// the exception message string should document the nature of the semantic error
-	//Expression eval();
+	Expression eval();
 
-	
+private:
 
+	AST* syntaxTree;
 
+	std::queue<std::string> tokenList;
+
+	Expression result;
 };
 
 
