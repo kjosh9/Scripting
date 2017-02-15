@@ -15,11 +15,16 @@
 // the string cannot be tokenized.
 std::queue<std::string> createList(std::istream& input);
 
+enum type {None, Bool, Symbol, Double};
+//nodes are also atoms
 typedef struct Node{
 	
-	//for now, let's just say the data type is a string	
-	std::string data;
-	
+	type atomType;
+
+	bool boolValue;
+	double doubleValue;
+	std::string symbolValue;	
+
 	//will have any number of branches
 	std::vector<Node*> branches;
 
@@ -44,6 +49,8 @@ public:
 	
 	//some ways of presenting the data
 	bool empty();
+
+	Node* getRoot();
 
 private:
 	Node* root;

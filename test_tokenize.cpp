@@ -75,6 +75,11 @@ TEST_CASE("Test assembleAST", "[AST]"){
 	tree->assembleAST(reList);
 
 	REQUIRE(tree->empty() == false);
+	
+	Node* checkRoot = tree->getRoot();
+
+	REQUIRE(checkRoot->atomType == Symbol);
+	REQUIRE(checkRoot->symbolValue.compare("+") == 0);
 }
 
 
