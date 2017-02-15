@@ -15,7 +15,6 @@
 // the string cannot be tokenized.
 std::queue<std::string> createList(std::istream& input);
 
-
 typedef struct Node{
 	
 	//for now, let's just say the data type is a string	

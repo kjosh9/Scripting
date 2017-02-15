@@ -4,24 +4,49 @@
 // (+ a ( - 4 ))
 // "(", "+", "a", "(", "-", "4", ")", ")"
 std::queue<std::string> createList(std::istream& input){
-	
-	//current limitations: two digit numbers.
 
-	char c;
+	std::string token;
+	std::string segment;	
+
 	std::queue<std::string> data;
-	while(!input.eof()){
-		std::string token;
-		input.get(c);	
+
+	input >> segment;
+
+	if(segment[0] == ' ' && segment.size() == 1){
+		data.push(segment);
+	}
+	else if(segment[0] == ' ' && segment.size() > 1){
 		
-		if(c != ' ' && c != '\n' && c != '\a'){
-			token = c;	
-			data.push(token);
+		token = segment.substr(0,1);	
+		data.push(token);
+		
+		//assume the rest is a valid token
+		token = segment.substr(1,segment.size());	
+	
+	}	
+	else{
+		//error situation
+	}		
+
+	while(!input.eof()){
+		
+		input >> segment;
+		
+		if(segment.size() == 1)	{	
+			data.push(segment);
 		}
-		//test here if c is a number
+		/*else if(segment.find("(") != string::npos){
+			//continue this
+		
+		}
+		else if(segment.find(")" != string::npos){
+			//continue this
+
+		}*/
+
 	}
 	return data;
 }
-
 
 AST::AST(){
 	root = nullptr;
