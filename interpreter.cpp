@@ -11,9 +11,10 @@ Interpreter::Interpreter(){
 // an AST of the data
 bool Interpreter::parse(std::istream & expression) noexcept
 {
-	tokenList = createList(expression);
+	bool success;
+	tokenList = createList(expression, success);
 
-	return true;
+	return success;
 }
 
 
@@ -37,7 +38,7 @@ Expression Interpreter::evaluate(Node* nodie){
 	int branchNo = 0;
 
 	//look to see if all the branches of the currNode are leaves
-	if(solvableExpression(nodie, &branchNo)){
+	if(this->solvableExpression(nodie, &branchNo)){
 
 		//if it is solvable, lets simplify this expression
 		
@@ -83,7 +84,7 @@ std::vector<Expression*> Interpreter::formExpression(Node* currNode){
 	return expList;
 }
 
-bool solvableExpression(Node* currNode, int* branchNo){
+bool Interpreter::solvableExpression(Node* currNode, int* branchNo){
 
 		if(currNode->branches.empty()){
 			std::cout << "ERROR: No branches" << std::endl;				

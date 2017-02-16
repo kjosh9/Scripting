@@ -5,50 +5,77 @@
 // "(", "+", "a", "(", "-", "4", ")", ")"
 
 //split string on spaces, "(", and ")"
-std::queue<std::string> createList(std::istream& input){
+std::queue<std::string> createList(std::istream& input, bool &success){
 
+	success = true;
 	std::string token;
 	std::string segment;	
 
 	std::queue<std::string> data;
 
-	input >> segment;
+	int open = 0;
+	int close = 0;
 
-	if(segment[0] == '(' && segment.size() == 1){
-		data.push(segment);
-	}
-	else if(segment[0] == '(' && segment.size() > 1){
-		
-		token = segment.substr(0,1);	
-		data.push(token);
-		
-		//assume the rest is a valid token
-		token = segment.substr(1,segment.size()-1);
-		data.push(token);	
+	while(input >> segment){
 	
-	}	
-	else{
-		//error situation
-	}		
-
-	while(!input.eof()){
+		//split this string up based on '(' and ')'
 		
-		input >> segment;
-		
-		if(!input.eof()){
-			if(segment.size() == 1)	{	
-				data.push(segment);
+		int last = 0;
+		bool nothingSpecial = true;
+		for(int i = 0; i < segment.size(); i++){
+			if(segment[i] == '('){
+				if(last == i){
+					data.push(segment.substr(last, 1));
+					last++;
+				}
+				else{
+					std::string newStr = segment.substr(last, i-last); 
+					if(isdigit(newStr[0]) && !isdigit(newStr[1]))
+						success = false;					
+					data.push(newStr);
+					last = i;
+					data.push(segment.substr(i, 1));
+				}	
+				open++;	
+				nothingSpecial = false;	
 			}
-			/*else if(segment.find("(") != string::npos){
-				//continue this
-		
+			else if(segment[i] == ')'){
+				if(last == i){
+					data.push(segment.substr(last, 1));
+					if(data.front().compare("(") == 0)
+						success = false;
+					last++;
+				}
+				else{
+					std::string newStr = segment.substr(last, i-last); 
+					if(isdigit(newStr[0]) && !isdigit(newStr[1]))
+						success = false;					
+					data.push(newStr);
+					last = i;
+					data.push(segment.substr(i, 1));
+				}		
+				close++;
+				nothingSpecial = false;
 			}
-			else if(segment.find(")" != string::npos){
-				//continue this
-
-			}*/
+		}
+		if(nothingSpecial){
+			if(isdigit(segment[0]) && !isdigit(segment[1]))
+				success=false;					
+			data.push(segment);
 		}
 	}
+
+	if(data.front().compare("(") != 0 ){
+		success = false;
+		//std::cout << "Incorrect first character" << std::endl;
+	}
+
+	if(open != close){
+		success = false;
+		//std::cout << "Incorrect parenth" << std::endl;
+	}
+
+
 	return data;
 }
 
