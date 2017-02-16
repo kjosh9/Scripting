@@ -5,13 +5,14 @@ Environment::Environment(){
 	
 	Expression* PI = new Expression((double)atan2(0,-1));
 	
-	//addToSymbolMap("pi", PI);
+	addToSymbolMap("pi", PI);
 }
 
 bool Environment::addToSymbolMap(std::string symbol, Expression* exp){
-	
-	if(symbolMap.find(symbol) != symbolMap.end()){
+
+	if(symbolMap.find(symbol) == symbolMap.end()){
 		symbolMap.insert(std::pair<std::string,Expression*>(symbol, exp));
+		std::cout << "Symbol " << symbol << " added to map" << std::endl;		
 		return true;	
 	}	
 	else{
@@ -43,18 +44,20 @@ Expression* Environment::evaluateExpression(std::vector<Expression*> expList){
 
 	//detect if any of the expressions are symbols that need mapping
 	// then replace with new expressions
-	for(int i = 1; i < expList.size(); i++){
-		if(expList[i]->dataType() == String){
-			Expression* temExp = symbolMap[expList[i]->stringData()];
-			
-			Expression* newExp;
-			if(temExp->dataType() == Bool){
-				newExp = new Expression(temExp->boolData());
-			}			
-			else if(temExp->dataType() == Double){
-				newExp == new Expression(temExp->doubleData());
+	if(expList[0]->stringData().compare("define") != 0){
+		for(int i = 1; i < expList.size(); i++){
+			if(expList[i]->dataType() == String){
+				Expression* temExp = symbolMap[expList[i]->stringData()];
+
+				Expression* newExp;
+				if(temExp->dataType() == Bool){
+					newExp = new Expression(temExp->boolData());
+				}			
+				else if(temExp->dataType() == Double){
+					newExp = new Expression(temExp->doubleData());
+				}
+				expList[i] = newExp;
 			}
-			expList[i] = newExp;
 		}
 	}
 
@@ -67,14 +70,17 @@ Expression* Environment::evaluateExpression(std::vector<Expression*> expList){
 
 
 /*------------------------------------------------------------------------------*/
-	else if(expList[0]->stringData().compare("define") == 0){
+	else if(expList[0]->stringData().compare("define") == 0){	
+
 		if(expList.size() > 3){
 			std::cout << "ERROR: too many arguments for define" << std::endl;
 		}
 
-		result = new Expression(addToSymbolMap(expList[1]->stringData(), expList[2]));
-
-		return result;
+		if(addToSymbolMap(expList[1]->stringData(), expList[2])){
+			return expList[2];
+		}
+		else
+			std::cout << "error in define" << std::endl;
 	}
 
 /*------------------------------------------------------------------------------*/
