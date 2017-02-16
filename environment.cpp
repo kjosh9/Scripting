@@ -225,13 +225,14 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare("+") == 0){
+		Expression sumExp;		
 		double sum = 0;
 		for(int i = 1; i < expList.size(); i++){
 			sum = sum + expList[i]->doubleData();
 		}
 
-		result = Expression(sum);
-		return result;
+		sumExp = Expression((double)sum);
+		return sumExp;
 	}
 
 
@@ -276,7 +277,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		return result;
 	}
 	else{
-		Expression result = Expression(false);
+		Expression result = Expression();
 		return result;
 	}
 }

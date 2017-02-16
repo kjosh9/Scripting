@@ -66,16 +66,16 @@ Expression Interpreter::eval(){
 Expression Interpreter::evaluate(Node* nodie){
 
 	int branchNo = 0;
-
+	Expression result;
+	
 	//look to see if all the branches of the currNode are leaves
 	if(this->solvableExpression(nodie, branchNo)){
 
 		//std::cout << " solvable" << std::endl;
-		//if it is solvable, lets simplify this expression
 		
 		//first, lets form the expression from atoms
 		std::vector<Expression*> resultList = formExpression(nodie);		
-		Expression result = env.evaluateExpression(resultList);
+		result = env.evaluateExpression(resultList);
 	}
 	else{
 		//if it is not solvable, let's go to the part that needs
@@ -85,7 +85,7 @@ Expression Interpreter::evaluate(Node* nodie){
 
 		//after its branches are simplified, then simplifiy 
 		std::vector<Expression*> resultList = formExpression(nodie);
-		Expression result = env.evaluateExpression(resultList);
+		result = env.evaluateExpression(resultList);
 	}
 	return result;
 }
