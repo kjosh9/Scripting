@@ -140,9 +140,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		for(int i = 1; i < expList.size(); i++){
 			answer = answer && expList[i]->boolData();
 		}
-
-		result = new Expression(answer);
-		return result;	
+		return Expression((bool)answer);
 	}
 
 
@@ -150,13 +148,10 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	else if(expList[0]->stringData().compare("or") == 0){
 
 		bool answer = false;
-	
 		for(int i = 1; i < expList.size(); i++){
 			answer = answer || expList[i]->boolData();
 		}		
-
-		result = new Expression(answer);
-		return result;
+		return Expression(answer);
 	}
 
 
@@ -166,9 +161,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		if(expList.size() > 3){
 			std::cout << "ERROR: too many arguments for <" << std::endl;
 		}
-	
-		result = new Expression(expList[1]->doubleData() < expList[2]->doubleData());
-		return result;
+		return Expression(expList[1]->doubleData() < expList[2]->doubleData());
 	}
 
 
@@ -179,8 +172,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 			std::cout << "ERROR: too many arguments for <=" << std::endl;
 		}
 	
-		result = new Expression(expList[1]->doubleData() <= expList[2]->doubleData());
-		return result;
+		return Expression(expList[1]->doubleData() <= expList[2]->doubleData());
 	}
 
 
@@ -191,9 +183,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 			std::cout << "ERROR: too many arguments for >" << std::endl;
 		}
 	
-		result = new Expression(expList[1]->doubleData() > expList[2]->doubleData());
-		return result;
-
+		return Expression(expList[1]->doubleData() > expList[2]->doubleData());
 	}
 
 
@@ -204,9 +194,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 			std::cout << "ERROR: too many arguments for >=" << std::endl;
 		}
 	
-		result = new Expression(expList[1]->doubleData() >= expList[2]->doubleData());
-		return result;
-
+		return Expression(expList[1]->doubleData() >= expList[2]->doubleData());
 	}
 
 
@@ -217,52 +205,43 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 			std::cout << "ERROR: too many arguments for =" << std::endl;
 		}
 	
-		result = new Expression(expList[1]->doubleData() == expList[2]->doubleData());
-		return result;		
-
+		return Expression(expList[1]->doubleData() == expList[2]->doubleData());
 	}
 
 
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare("+") == 0){
-		Expression sumExp;		
 		double sum = 0;
 		for(int i = 1; i < expList.size(); i++){
 			sum = sum + expList[i]->doubleData();
 		}
 
-		sumExp = Expression((double)sum);
-		return sumExp;
+		return Expression((double)sum);
 	}
 
 
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare("-") == 0){
 		if(expList.size() == 2){
-			result = new Expression(-1*expList[1]->doubleData());
+			return Expression(-1*expList[1]->doubleData());
 		}
 		else if(expList.size() == 3){
-			result = new Expression(expList[1]->doubleData() - expList[2]->doubleData());
+			return Expression(expList[1]->doubleData() - expList[2]->doubleData());
 		}
 		else{
 			std::cout << "Too many arguments for -" << std::endl;
-			result = new Expression(false);
+			return Expression();
 		}
-
-		return result;
 	}
 
 
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare("*") == 0){
-		
 		double product = 1;
 		for(int i = 1; i < expList.size(); i++){
 			product = product * expList[i]->doubleData();
 		}
-
-		result = new Expression(product);
-		return result;
+		return Expression(product);
 	}
 
 
@@ -271,14 +250,13 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		
 		if(expList.size() > 3){
 			std::cout << "Too many arguments for /" << std::endl;	
+			return Expression();
 		}
 
-		result = new Expression(expList[1]->doubleData() / expList[2]->doubleData());
-		return result;
+		return Expression(expList[1]->doubleData() / expList[2]->doubleData());
 	}
 	else{
-		Expression result = Expression();
-		return result;
+		return Expression();
 	}
 }
 

@@ -27,7 +27,7 @@ Expression Interpreter::eval(){
 	//start with the root of the tree
 	Node* treeRoot = syntaxTree->getRoot();
 
-	std::cout << "atom value: " << treeRoot->atomType << std::endl;
+	//std::cout << "atom value: " << treeRoot->atomType << std::endl;
 
 	Expression result;
 	
@@ -36,7 +36,7 @@ Expression Interpreter::eval(){
 		//std::cout << "empty tree ";
 		if(treeRoot->atomType == aBool){
 			result = Expression((bool)treeRoot->boolValue);
-			std::cout << "Return Expression: " << result.dataType() << std::endl;
+			//std::cout << "Return Expression: " << result.dataType() << std::endl;
 		}
 		if(treeRoot->atomType == aSymbol){
 			bool success;
@@ -56,7 +56,7 @@ Expression Interpreter::eval(){
 		result = evaluate(treeRoot);		
 	}
 
-	std::cout << "Return Expression: " << result.dataType() << std::endl;
+	//std::cout << "Return Expression: " << result.dataType() << std::endl;
 	return result;	
 
 }

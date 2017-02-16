@@ -57,10 +57,20 @@ bool Expression::operator==(const Expression & exp) const noexcept{
 		if((exp.dataType() == Bool) && (exp.boolData() == boolData())){	
 			return true;	
 		}
-		else if((exp.dataType() == Double) && (exp.doubleData() == doubleData())){
+		else if(exp.dataType() == Bool){
+			std::cout << "RHS: " << exp.boolData() << std::endl;
+			std::cout << "LHS: " << boolData() << std::endl;
+		}
+		
+		if((exp.dataType() == Double) && (exp.doubleData() == doubleData())){
 			return true;	
 		}
-		else if(exp.dataType() == String){
+		else if(exp.dataType() == Double){
+			std::cout << "RHS: " << exp.doubleData() << std::endl;
+			std::cout << "LHS: " << doubleData() << std::endl;
+		}
+
+		if(exp.dataType() == String){
 			if(exp.stringData().compare(stringData()) == 0)
 				return true;
 			else
