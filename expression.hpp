@@ -5,7 +5,7 @@
 
 /*Will this will need a destuctor and a copy contructor?*/
 
-enum expType {Bool, String, Double, None};
+enum expType {None, Bool, String, Double};
 class Expression{
 
 public:
@@ -21,10 +21,17 @@ public:
 	// Construct an Expresion with a single Symbol atom with value
 	Expression(const std::string & value);
 
+	//destructor
+	~Expression();
+
+	//copy constructor
+	Expression(const Expression& another);
+
 	// Equality operator for two Expressions, to expression are equal if they have the same
 	// type, atom value, and number of arguments
 	bool operator==(const Expression & exp) const noexcept;
 
+	Expression& operator=(const Expression& another);
 
 	/*non-elegant solution*/
 	expType dataType() const;

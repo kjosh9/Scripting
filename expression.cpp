@@ -17,22 +17,51 @@ Expression::Expression(double value){
 }
 
 Expression::Expression(const std::string & value){
-	_dataType = String;
-	_stringData = value;
+	
+	if(value.compare("True") == 0){
+		_dataType = Bool;
+		_boolData = true;
+	}
+	else if(value.compare("False") == 0){
+		_dataType = Bool;
+		_boolData = false;
+	}
+	else{
+		_dataType = String;
+		_stringData = value;
+	}
+}
+
+Expression::~Expression(){
+
+}
+
+Expression::Expression(const Expression& rhs){
+
+	_dataType = rhs._dataType;
+	
+	if(_dataType == Bool)
+		_boolData = rhs._boolData;
+	else if(_dataType == Double)
+		_doubleData = rhs._doubleData;
+	else if(_dataType == String)
+		_stringData = rhs._stringData;
+
+	//std::cout << "COPY: " << _dataType << std::endl;
+	
 }
 
 bool Expression::operator==(const Expression & exp) const noexcept{
-	return true;
-	if(exp.dataType() == this->dataType()){
+	if(exp.dataType() == dataType()){
 	
-		if((exp.dataType() == Bool) && (exp.boolData() == this->boolData())){	
+		if((exp.dataType() == Bool) && (exp.boolData() == boolData())){	
 			return true;	
 		}
-		else if((exp.dataType() == Double) && (exp.doubleData() == this->doubleData())){
+		else if((exp.dataType() == Double) && (exp.doubleData() == doubleData())){
 			return true;	
 		}
 		else if(exp.dataType() == String){
-			if(exp.stringData().compare(this->stringData()) == 0)
+			if(exp.stringData().compare(stringData()) == 0)
 				return true;
 			else
 				return false;
@@ -41,8 +70,33 @@ bool Expression::operator==(const Expression & exp) const noexcept{
 			return false;
 		}
 	}
-	else 
+	else {
+		std::cout << "incompatible types" <<std::endl;
+		std::cout << "RHS: " << exp.dataType() << std::endl;
+		std::cout << "LHS: " << dataType() << std::endl;
+	
 		return false;
+	}
+
+}
+
+Expression& Expression::operator=(const Expression& rhs){
+	
+	if(this == &rhs)
+		return *this;
+
+	_dataType = rhs._dataType;
+	
+	if(_dataType == Bool)
+		_boolData = rhs._boolData;
+	else if(_dataType == String)
+		_stringData = rhs._stringData;
+	else if(_dataType == Double)
+		_doubleData = rhs._doubleData;
+
+	//std::cout << "Assignment: " << _dataType << std::endl;
+
+	return *this;
 
 }
 

@@ -3,15 +3,15 @@
 
 Environment::Environment(){
 	
-	Expression* PI = new Expression((double)atan2(0,-1));
+	Expression PI = Expression((double)atan2(0,-1));
 	
 	addToSymbolMap("pi", PI);
 }
 
-bool Environment::addToSymbolMap(std::string symbol, Expression* exp){
+bool Environment::addToSymbolMap(std::string symbol, Expression exp){
 
 	if(symbolMap.find(symbol) == symbolMap.end()){
-		symbolMap.insert(std::pair<std::string,Expression*>(symbol, exp));
+		symbolMap.insert(std::pair<std::string,Expression>(symbol, exp));
 		//std::cout << "Symbol " << symbol << " added to map" << std::endl;		
 		return true;	
 	}	
@@ -21,19 +21,33 @@ bool Environment::addToSymbolMap(std::string symbol, Expression* exp){
 	}
 }
 
-Expression* Environment::evaluateExpression(std::vector<Expression*> expList){
+Expression Environment::fetchExp(std::string symbol, bool& success){
+
+	Expression lookup;
+	if(symbolMap.find(symbol) == symbolMap.end()){
+		success = false;
+	}
+	else{
+		lookup = symbolMap[symbol];
+		success = true;
+	}
+
+	return lookup;
+}
+
+Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	
-	Expression* result;
+	Expression result;
+	std::cout << " within the env" << std::endl;
 
-
-	/*for(int i = 0; i < expList.size(); i++){
+	for(int i = 0; i < expList.size(); i++){
 		if(expList[i]->dataType() == String)
 			std::cout << expList[i]->stringData() << std::endl;
 		if(expList[i]->dataType() == Bool)
 			std::cout << expList[i]->boolData() << std::endl;		
 		if(expList[i]->dataType() == Double)
 			std::cout << expList[i]->doubleData() << std::endl;
-	}*/
+	}
 
 	//check to make sure the first type is correct
 	if(expList[0]->dataType() != String){
@@ -47,24 +61,22 @@ Expression* Environment::evaluateExpression(std::vector<Expression*> expList){
 	if(expList[0]->stringData().compare("define") != 0){
 		for(int i = 1; i < expList.size(); i++){
 			if(expList[i]->dataType() == String){
-				Expression* temExp = symbolMap[expList[i]->stringData()];
-
-				Expression* newExp;
-				if(temExp->dataType() == Bool){
-					newExp = new Expression(temExp->boolData());
-				}			
-				else if(temExp->dataType() == Double){
-					newExp = new Expression(temExp->doubleData());
-				}
-				expList[i] = newExp;
+				Expression temExp = symbolMap[expList[i]->stringData()];
+				expList[i] = &temExp;
+				std::cout << "Looked up " << expList[i]->stringData() << "as : " ;
+				
 			}
 		}
+	}
+	if(expList.size() == 1 && expList[0]->dataType() == String){
+		Expression temExp = symbolMap[expList[0]->stringData()];
+		return temExp;
 	}
 
 
 	if(expList[0]->stringData().compare("begin") == 0){
 		//not exactly sure what to do with this
-		result = new Expression(true);
+		result = Expression(true);
 		return result;		
 	}
 
@@ -97,19 +109,21 @@ Expression* Environment::evaluateExpression(std::vector<Expression*> expList){
 				
 	}
 
-
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare("not") == 0){
 
+		Expression NotExp;
 		if(expList.size() > 2){
 			std::cout << "ERROR: too many arguments for not" << std::endl;
 		}
 		
 		if(expList[1]->dataType() == Bool){
-
+			NotExp = Expression((bool)!expList[1]->boolData());
+			return NotExp;
 		}
 		else if(expList[1]->dataType() == Double){
-
+			NotExp = Expression((double)-1*expList[1]->doubleData());
+			return NotExp;
 		}
 		else{	
 			std::cout << "this is maybe an error in not" << std::endl;
@@ -216,7 +230,7 @@ Expression* Environment::evaluateExpression(std::vector<Expression*> expList){
 			sum = sum + expList[i]->doubleData();
 		}
 
-		result = new Expression(sum);
+		result = Expression(sum);
 		return result;
 	}
 
@@ -260,9 +274,9 @@ Expression* Environment::evaluateExpression(std::vector<Expression*> expList){
 
 		result = new Expression(expList[1]->doubleData() / expList[2]->doubleData());
 		return result;
-	}	
+	}
 	else{
-		Expression* result = new Expression(false);
+		Expression result = Expression(false);
 		return result;
 	}
 }

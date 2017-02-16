@@ -27,25 +27,36 @@ Expression Interpreter::eval(){
 	//start with the root of the tree
 	Node* treeRoot = syntaxTree->getRoot();
 
+	std::cout << "atom value: " << treeRoot->atomType << std::endl;
+
+	Expression result;
+	
 	//test if root has and branches
 	if(treeRoot->branches.empty()){
-		std::cout << "empty tree ";
-		Expression result;
+		//std::cout << "empty tree ";
 		if(treeRoot->atomType == aBool){
-			result = Expression(treeRoot->boolValue);
+			result = Expression((bool)treeRoot->boolValue);
+			std::cout << "Return Expression: " << result.dataType() << std::endl;
 		}
 		if(treeRoot->atomType == aSymbol){
-			result = Expression((std::string)treeRoot->symbolValue);
+			bool success;
+			Expression temp = env.fetchExp((std::string)treeRoot->symbolValue, success);
+			if(success == true)
+				result = temp;
+			else	
+				result = Expression((std::string)treeRoot->symbolValue);
+			
 		}
 		if(treeRoot->atomType == aDouble){
-			result = Expression(treeRoot->doubleValue);
+			result = Expression((double)treeRoot->doubleValue);
 		}	
 	}
 	else{
-		std::cout << "non-empty tree ";
-		Expression result = this->evaluate(treeRoot);		
+		//std::cout << "non-empty tree ";
+		result = evaluate(treeRoot);		
 	}
 
+	std::cout << "Return Expression: " << result.dataType() << std::endl;
 	return result;	
 
 }
@@ -57,13 +68,14 @@ Expression Interpreter::evaluate(Node* nodie){
 	int branchNo = 0;
 
 	//look to see if all the branches of the currNode are leaves
-	if(this->solvableExpression(nodie, &branchNo)){
-		std::cout << " solvable" << std::endl;
+	if(this->solvableExpression(nodie, branchNo)){
+
+		//std::cout << " solvable" << std::endl;
 		//if it is solvable, lets simplify this expression
 		
 		//first, lets form the expression from atoms
-		std::vector<Expression*> resultList = this->formExpression(nodie);
-		Expression* result = env.evaluateExpression(resultList);
+		std::vector<Expression*> resultList = formExpression(nodie);		
+		Expression result = env.evaluateExpression(resultList);
 	}
 	else{
 		//if it is not solvable, let's go to the part that needs
@@ -72,22 +84,24 @@ Expression Interpreter::evaluate(Node* nodie){
 		this->evaluate(nodie);	
 
 		//after its branches are simplified, then simplifiy 
-		std::vector<Expression*> resultList = this->formExpression(nodie);
-		Expression* result = env.evaluateExpression(resultList);
+		std::vector<Expression*> resultList = formExpression(nodie);
+		Expression result = env.evaluateExpression(resultList);
 	}
+	return result;
 }
 
 std::vector<Expression*> Interpreter::formExpression(Node* currNode){
 
-	std::vector<Expression*> expList;	
+	std::vector<Expression*> expList;
 
 	//start with the current node	
 	Expression* newExp = new Expression(currNode->symbolValue);
 	expList.push_back(newExp);
-	std::cout << "1" << std::endl;
+	//std::cout << "Q" << std::endl;
 	
 	for(int i = 0; i < currNode->branches.size(); i++){
-		std::cout << i << std::endl;
+		
+		//std::cout << i << std::endl;
 		if(currNode->branches[i]->atomType == aBool){
 			Expression* nextExp = new Expression(currNode->branches[i]->boolValue);
 			expList.push_back(nextExp);
@@ -98,16 +112,18 @@ std::vector<Expression*> Interpreter::formExpression(Node* currNode){
 		}
 		else if(currNode->branches[i]->atomType == aDouble){
 			Expression* nextExp = new Expression(currNode->branches[i]->doubleValue);
-			std::cout << nextExp->doubleData();
+			//std::cout << "data: "<< nextExp->doubleData();
 			expList.push_back(nextExp);
 		}	
 	}
-	std::cout << "return list ";
+	//std::cout << "return list ";
 	return expList;
 }
 
-bool Interpreter::solvableExpression(Node* currNode, int* branchNo){
+bool Interpreter::solvableExpression(Node* currNode, int& branchNo){
+		
 
+		branchNo = 0;		
 		if(currNode->branches.empty()){
 			std::cout << "ERROR: No branches" << std::endl;				
 			return false;		
@@ -115,6 +131,7 @@ bool Interpreter::solvableExpression(Node* currNode, int* branchNo){
 
 		for(int i = 0; i < currNode->branches.size(); i++){
 			if(currNode->branches[i]->isLeaf == false){
+				branchNo = i;					
 				return false;
 			}	
 		}	

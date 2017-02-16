@@ -55,7 +55,7 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 					std::string newStr = segment.substr(last, i-last); 
 					if((newStr.size()>1)&&(isdigit(newStr[0]) && (!isdigit(newStr[1])))){
 						success = false;					
-						std::cout <<"bleh" <<std::endl;
+						//std::cout <<"bleh" <<std::endl;
 					}
 					data.push(newStr);
 					last = i;
@@ -70,7 +70,7 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 		if(nothingSpecial){
 			if((segment.size() > 1) && (isdigit(segment[0]) && !isdigit(segment[1]))){
 				success=false;		
-				std::cout << "incorrect digit string" << std::endl;		
+				//std::cout << "incorrect digit string" << std::endl;		
 			}	
 			data.push(segment);
 			lastPar = '-';
@@ -82,7 +82,7 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 			if(newStr.compare(")")!=0 && newStr.compare("(")!=0){
 				if((newStr.size() > 1) && (isdigit(newStr[0]) && !isdigit(newStr[1]))){
 					success=false;		
-					std::cout << "incorrect digit string" << std::endl;		
+					//std::cout << "incorrect digit string" << std::endl;		
 				}	
 	
 				data.push(newStr);
@@ -93,11 +93,11 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 
 	if(data.front().compare("(") != 0 ){
 		success = false;
-		std::cout << "Incorrect first character" << std::endl;
+		//std::cout << "Incorrect first character" << std::endl;
 	}
 	if(open != close){
 		success = false;
-		std::cout << "Incorrect parenth" << std::endl;
+		//std::cout << "Incorrect parenth" << std::endl;
 	}
 
 
@@ -137,12 +137,12 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 				newNode->atomType = aDouble;
 			}
 			//detect if the token is a true boolean value
-			else if(tokenList.front().compare("true") == 0 || tokenList.front().compare("True") == 0){
+			else if((tokenList.front().compare("true") == 0) || (tokenList.front().compare("True") == 0)){
 				newNode->boolValue = true;
 				newNode->atomType = aBool;
 			}
 			//detect if the token is a false boolean value
-			else if(tokenList.front().compare("false") == 0 || tokenList.front().compare("False") == 0){
+			else if((tokenList.front().compare("false") == 0) || (tokenList.front().compare("False") == 0)){
 				newNode->boolValue = false;
 				newNode->atomType = aBool;
 			}
@@ -172,12 +172,12 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 				newNode->atomType = aDouble;
 			}
 			//detect if the token is a true boolean value
-			else if(tokenList.front().compare("true") == 0 || tokenList.front().compare("True") == 0){
+			else if((tokenList.front().compare("true") == 0) || (tokenList.front().compare("True") == 0)){
 				newNode->boolValue = true;
 				newNode->atomType = aBool;
 			}
 			//detect if the token is a false boolean value
-			else if(tokenList.front().compare("false") == 0 || tokenList.front().compare("False") == 0){
+			else if((tokenList.front().compare("false") == 0) || (tokenList.front().compare("False") == 0)){
 				newNode->boolValue = false;
 				newNode->atomType = aBool;
 			}
@@ -223,12 +223,12 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 				newNode->atomType = aDouble;
 			}
 			//detect if the token is a true boolean value
-			else if(tokenList.front().compare("true") == 0 || tokenList.front().compare("True") == 0){
+			else if((tokenList.front().compare("true") == 0 )|| (tokenList.front().compare("True") == 0)){
 				newNode->boolValue = true;
 				newNode->atomType = aBool;
 			}
 			//detect if the token is a false boolean value
-			else if(tokenList.front().compare("false") == 0 || tokenList.front().compare("False") == 0){
+			else if((tokenList.front().compare("false") == 0) || (tokenList.front().compare("False") == 0)){
 				newNode->boolValue = false;
 				newNode->atomType = aBool;
 			}

@@ -35,7 +35,7 @@ public:
 	std::vector<Expression*> formExpression(Node* currNode);
 
 	//this will tell me if all the children of a node are leaves
-	bool solvableExpression(Node* currNode, int* branchNo);
+	bool solvableExpression(Node* currNode, int& branchNo);
 
 private:
 

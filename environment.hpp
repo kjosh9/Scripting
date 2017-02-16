@@ -16,13 +16,15 @@ public:
 
 	Environment();
 
-	bool addToSymbolMap(std::string symbol, Expression* exp);
+	bool addToSymbolMap(std::string symbol, Expression exp);
 
-	Expression* evaluateExpression(std::vector<Expression*> expList);
+	Expression evaluateExpression(std::vector<Expression*> &expList);
+
+	Expression fetchExp(std::string symbol, bool& success);
 
 private:
 
-	std::map<std::string, Expression*> symbolMap;
+	std::map<std::string, Expression> symbolMap;
 
 };
 
