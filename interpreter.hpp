@@ -10,6 +10,7 @@
 #include <queue>
 #include <istream>
 #include <vector>
+#include <math.h>
 
 class Interpreter{
 

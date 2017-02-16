@@ -12,7 +12,7 @@ bool Environment::addToSymbolMap(std::string symbol, Expression* exp){
 
 	if(symbolMap.find(symbol) == symbolMap.end()){
 		symbolMap.insert(std::pair<std::string,Expression*>(symbol, exp));
-		std::cout << "Symbol " << symbol << " added to map" << std::endl;		
+		//std::cout << "Symbol " << symbol << " added to map" << std::endl;		
 		return true;	
 	}	
 	else{
@@ -38,7 +38,7 @@ Expression* Environment::evaluateExpression(std::vector<Expression*> expList){
 	//check to make sure the first type is correct
 	if(expList[0]->dataType() != String){
 		std::cout << "ERROR: not the correct starting expression: ";	
-		std::cout << expList[0]->dataType() << std::endl;
+		//std::cout << expList[0]->dataType() << std::endl;
 	}	
 
 

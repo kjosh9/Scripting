@@ -2,8 +2,7 @@
 #include <fstream>
 #include <string.h>
 
-//#include "interpreter.hpp"
-//#include "tokenize.hpp"
+#include "interpreter.hpp"
 
 //check the file type and return a boolean
 bool checkFileType(std::string filename){
@@ -19,7 +18,7 @@ bool checkFileType(std::string filename){
 
 int main(int argc, char * argv[]){
 
-	//Interpreter reader;
+	Interpreter interp;
 	
 	switch(argc){
 		//case where there is no command line arguments
@@ -46,11 +45,7 @@ int main(int argc, char * argv[]){
 
 			std::ifstream inFile (argv[1]);
 			if(inFile.is_open()){	
-				while(!inFile.eof()){
-					std::string line;
-					getline(inFile, line);
-					std::cout << "Line" << std::endl;
-				}
+				interp.parse(inFile);
 			}  	
 			else{
 				std::cout << "File does not exist" << std::endl;
@@ -66,11 +61,18 @@ int main(int argc, char * argv[]){
 			std::string arg1 = argv[1];
 
 			std::cout << arg1 << std::endl;
+			
+			std::string inputString = "";
+			for(int i = 2; i < argc; i++){
+				inputString.append((std::string)argv[i]);
+			}
+
+			//put the input string into the stream format
+			std::istringstream inputStream;
+			inputStream.str(inputString);
 
 			if(arg1.compare("-e") == 0){
-				
-				//now use the interpreter
-
+				interp.parse(inputStream);
 			}	
 			else{	
 				std::cout <<"Incorrect input" << std::endl;

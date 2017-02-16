@@ -29,7 +29,7 @@ Expression Interpreter::eval(){
 
 	//test if root has and branches
 	if(treeRoot->branches.empty()){
-		std::cout << "empty tree";
+		std::cout << "empty tree ";
 		Expression result;
 		if(treeRoot->atomType == aBool){
 			result = Expression(treeRoot->boolValue);
@@ -42,8 +42,8 @@ Expression Interpreter::eval(){
 		}	
 	}
 	else{
+		std::cout << "non-empty tree ";
 		Expression result = this->evaluate(treeRoot);		
-		std::cout << "non-empty tree";
 	}
 
 	return result;	
@@ -58,12 +58,12 @@ Expression Interpreter::evaluate(Node* nodie){
 
 	//look to see if all the branches of the currNode are leaves
 	if(this->solvableExpression(nodie, &branchNo)){
-
+		std::cout << " solvable" << std::endl;
 		//if it is solvable, lets simplify this expression
 		
 		//first, lets form the expression from atoms
 		std::vector<Expression*> resultList = this->formExpression(nodie);
-		Expression result = env.evaluateExpression(resultList);
+		Expression* result = env.evaluateExpression(resultList);
 	}
 	else{
 		//if it is not solvable, let's go to the part that needs
@@ -73,7 +73,7 @@ Expression Interpreter::evaluate(Node* nodie){
 
 		//after its branches are simplified, then simplifiy 
 		std::vector<Expression*> resultList = this->formExpression(nodie);
-		Expression result = env.evaluateExpression(resultList);
+		Expression* result = env.evaluateExpression(resultList);
 	}
 }
 
@@ -84,8 +84,10 @@ std::vector<Expression*> Interpreter::formExpression(Node* currNode){
 	//start with the current node	
 	Expression* newExp = new Expression(currNode->symbolValue);
 	expList.push_back(newExp);
+	std::cout << "1" << std::endl;
 	
 	for(int i = 0; i < currNode->branches.size(); i++){
+		std::cout << i << std::endl;
 		if(currNode->branches[i]->atomType == aBool){
 			Expression* nextExp = new Expression(currNode->branches[i]->boolValue);
 			expList.push_back(nextExp);
@@ -96,10 +98,11 @@ std::vector<Expression*> Interpreter::formExpression(Node* currNode){
 		}
 		else if(currNode->branches[i]->atomType == aDouble){
 			Expression* nextExp = new Expression(currNode->branches[i]->doubleValue);
+			std::cout << nextExp->doubleData();
 			expList.push_back(nextExp);
 		}	
 	}
-
+	std::cout << "return list ";
 	return expList;
 }
 
