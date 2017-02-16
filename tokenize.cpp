@@ -82,25 +82,26 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			//detect if the token is a number
 			if(isdigit(tokenList.front()[0])){
 				newNode->doubleValue = std::stod(tokenList.front());
-				newNode->atomType = Double;
+				newNode->atomType = aDouble;
 			}
 			//detect if the token is a true boolean value
 			else if(tokenList.front().compare("true") == 0){
 				newNode->boolValue = true;
-				newNode->atomType = Bool;
+				newNode->atomType = aBool;
 			}
 			//detect if the token is a false boolean value
 			else if(tokenList.front().compare("false") == 0){
 				newNode->boolValue = false;
-				newNode->atomType = Bool;
+				newNode->atomType = aBool;
 			}
 			//else it should be a string
 			else{
 				newNode->symbolValue = tokenList.front();
-				newNode->atomType = Symbol;
+				newNode->atomType = aSymbol;
 			}
 				
 			newNode->top = nullptr;
+			newNode->isLeaf = true;
 			root = newNode;
 			currNode = root;
 		
@@ -116,25 +117,27 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			//detect if the token is a number
 			if(isdigit(tokenList.front()[0])){
 				newNode->doubleValue = std::stod(tokenList.front());
-				newNode->atomType = Double;
+				newNode->atomType = aDouble;
 			}
 			//detect if the token is a true boolean value
 			else if(tokenList.front().compare("true") == 0){
 				newNode->boolValue = true;
-				newNode->atomType = Bool;
+				newNode->atomType = aBool;
 			}
 			//detect if the token is a false boolean value
 			else if(tokenList.front().compare("false") == 0){
 				newNode->boolValue = false;
-				newNode->atomType = Bool;
+				newNode->atomType = aBool;
 			}
 			//else it should be a string
 			else{
 				newNode->symbolValue = tokenList.front();
-				newNode->atomType = Symbol;
+				newNode->atomType = aSymbol;
 			}
-
+			
+			currNode->isLeaf = false;
 			newNode->top = currNode;
+			newNode->isLeaf = true;
 
 			currNode->branches.push_back(newNode);
 			currNode = newNode;
@@ -151,6 +154,7 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 				//break;
 			}
 		}
+		//these are branches of the current nodes
 		else{
 			
 			//assign current token as a branch
@@ -159,25 +163,25 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			//detect if the token is a number
 			if(isdigit(tokenList.front()[0])){
 				newNode->doubleValue = std::stod(tokenList.front());
-				newNode->atomType = Double;
+				newNode->atomType = aDouble;
 			}
 			//detect if the token is a true boolean value
 			else if(tokenList.front().compare("true") == 0){
 				newNode->boolValue = true;
-				newNode->atomType = Bool;
+				newNode->atomType = aBool;
 			}
 			//detect if the token is a false boolean value
 			else if(tokenList.front().compare("false") == 0){
 				newNode->boolValue = false;
-				newNode->atomType = Bool;
+				newNode->atomType = aBool;
 			}
 			//else it should be a string
 			else{
 				newNode->symbolValue = tokenList.front();
-				newNode->atomType = Symbol;
+				newNode->atomType = aSymbol;
 			}
 
-
+			newNode->isLeaf = true;
 			newNode->top = currNode;
 
 			currNode->branches.push_back(newNode);
