@@ -1,11 +1,14 @@
 #ifndef ENVIRONMENT_HPP
 #define ENVIRONMENT_HPP
 
-#include "Expression.hpp"
+#include "expression.hpp"
+#include <iostream>
+#include <math.h>
+#include <map>
+#include <vector>
 
 //This module should define the C++ types and code
 // required to implement the vtscript environment mapping
-
 
 class Environment{
 
@@ -13,13 +16,13 @@ public:
 
 	Environment();
 
-	//take a token and retrun something that indicates that it is
-	// an atom or procedure 
-	whatIsThis(std::string &token);
+	bool addToSymbolMap(std::string symbol, Expression* exp);
+
+	Expression* evaluateExpression(std::vector<Expression*> expList);
 
 private:
 
-	
+	std::map<std::string, Expression*> symbolMap;
 
 };
 

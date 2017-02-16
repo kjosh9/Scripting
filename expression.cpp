@@ -3,39 +3,35 @@
 
 
 Expression::Expression(){
-	_dataType = "none";
+	_dataType = None;
 }
 
-
 Expression::Expression(bool value){
-	_dataType = "bool";
+	_dataType = Bool;
 	_boolData = value;
 }
 
-
 Expression::Expression(double value){
-	_dataType = "double";
+	_dataType = Double;
 	_doubleData = value;
 }
 
-
 Expression::Expression(const std::string & value){
-	_dataType = "string";
+	_dataType = String;
 	_stringData = value;
 }
 
-
 bool Expression::operator==(const Expression & exp) const noexcept{
 	
-	if(exp.dataType().compare(this->dataType()) == 0){
+	if(exp.dataType() == this->dataType()){
 	
-		if((exp.dataType() == "bool") && (exp.boolData() == this->boolData())){	
+		if((exp.dataType() == Bool) && (exp.boolData() == this->boolData())){	
 			return true;	
 		}
-		else if((exp.dataType() == "double") && (exp.doubleData() == this->doubleData())){
+		else if((exp.dataType() == Double) && (exp.doubleData() == this->doubleData())){
 			return true;	
 		}
-		else if(exp.dataType() == "string"){
+		else if(exp.dataType() == String){
 			if(exp.stringData().compare(this->stringData()) == 0)
 				return true;
 			else
@@ -50,7 +46,7 @@ bool Expression::operator==(const Expression & exp) const noexcept{
 
 }
 
-std::string Expression::dataType() const{
+expType Expression::dataType() const{
 	return _dataType;
 }
 
@@ -65,4 +61,6 @@ std::string Expression::stringData() const{
 double Expression::doubleData() const{
 	return _doubleData;
 }
+
+
 

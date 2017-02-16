@@ -5,7 +5,7 @@
 
 /*Will this will need a destuctor and a copy contructor?*/
 
-
+enum expType {Bool, String, Double, None};
 class Expression{
 
 public:
@@ -15,7 +15,7 @@ public:
 	// Construct an Expression with a single Boolean atom with value
 	Expression(bool value);
 
-	// Construct and Expression with a single Number aton with value
+	// Construct and Expression with a single Number atom with value
 	Expression(double value);
 
 	// Construct an Expresion with a single Symbol atom with value
@@ -27,26 +27,24 @@ public:
 
 
 	/*non-elegant solution*/
-	std::string dataType() const;
+	expType dataType() const;
 
 	bool boolData() const;
 
 	std::string stringData() const;
 
 	double doubleData() const;
-	/*--------------------*/
+
 
 private: 
-	
-	/*non-elegant solution*/
-	//as string that tells the data type
-	std::string _dataType;
+		
+	//an enum type that tells the data type
+	expType _dataType;
 
 	//the actual data
 	bool _boolData;
 	std::string _stringData;
 	double _doubleData;
-	/*--------------------*/
 
 };
 #endif // EXPRESSION_HPP
