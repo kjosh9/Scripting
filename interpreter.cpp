@@ -22,15 +22,34 @@ bool Interpreter::parse(std::istream & expression) noexcept
 // and evaluate until root is evaluated
 Expression Interpreter::eval(){
 
+	syntaxTree->assembleAST(tokenList);
+
 	//start with the root of the tree
 	Node* treeRoot = syntaxTree->getRoot();
-	Node* currNode = treeRoot;
 
-	Expression result = this->evaluate(currNode);		
-	
+	//test if root has and branches
+	if(treeRoot->branches.empty()){
+		std::cout << "empty tree";
+		Expression result;
+		if(treeRoot->atomType == aBool){
+			result = Expression(treeRoot->boolValue);
+		}
+		if(treeRoot->atomType == aSymbol){
+			result = Expression((std::string)treeRoot->symbolValue);
+		}
+		if(treeRoot->atomType == aDouble){
+			result = Expression(treeRoot->doubleValue);
+		}	
+	}
+	else{
+		Expression result = this->evaluate(treeRoot);		
+		std::cout << "non-empty tree";
+	}
+
 	return result;	
 
 }
+
 
 //recursive function to traverse tree
 Expression Interpreter::evaluate(Node* nodie){

@@ -22,7 +22,7 @@ Expression::Expression(const std::string & value){
 }
 
 bool Expression::operator==(const Expression & exp) const noexcept{
-	
+	return true;
 	if(exp.dataType() == this->dataType()){
 	
 		if((exp.dataType() == Bool) && (exp.boolData() == this->boolData())){	

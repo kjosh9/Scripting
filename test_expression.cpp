@@ -36,4 +36,6 @@ TEST_CASE("Test equality" , "[Expression]"){
 	REQUIRE((exp0 == exp3) == false);
 	REQUIRE((exp3 == exp6) == false);
 	REQUIRE((exp8 == exp0) == false);
+
+	REQUIRE(exp8 == Expression(true));
 }
