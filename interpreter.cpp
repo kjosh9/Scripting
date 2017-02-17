@@ -38,7 +38,7 @@ Expression Interpreter::eval(){
 			result = Expression((bool)treeRoot->boolValue);
 			//std::cout << "Return Expression: " << result.dataType() << std::endl;
 		}
-		if(treeRoot->atomType == aSymbol){
+		if(treeRoot->atomType == aSymbol){						
 			bool success;
 			Expression temp = env.fetchExp((std::string)treeRoot->symbolValue, success);
 			if(success == true)

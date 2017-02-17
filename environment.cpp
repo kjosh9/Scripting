@@ -89,7 +89,8 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		}
 
 		if(addToSymbolMap(expList[1]->stringData(), expList[2])){
-			return expList[2];
+			Expression defExp = *expList[2];
+			return defExp;
 		}
 		else
 			std::cout << "error in define" << std::endl;
@@ -98,8 +99,9 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare("if") == 0){
 	
-		if(expList.size() > 4){
-			std::cout << "ERROR: too many arguments for if" << std::endl;
+		if(expList.size() != 4){
+			std::cout << "ERROR: incorrect number of arguments for if" << std::endl;
+			return Expression();
 		}
 
 		if(expList[1]->boolData())
@@ -256,6 +258,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		return Expression(expList[1]->doubleData() / expList[2]->doubleData());
 	}
 	else{
+		std::cout << "Invalid Procedure" << std::endl;
 		return Expression();
 	}
 }

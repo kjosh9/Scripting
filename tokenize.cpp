@@ -132,7 +132,7 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			Node* newNode = new Node();
 
 			//detect if the token is a number
-			if(isdigit(tokenList.front()[0])){
+			if(isdigit(tokenList.front()[0]) || tokenList.front()[0] == '-'){
 				newNode->doubleValue = std::stod(tokenList.front());
 				newNode->atomType = aDouble;
 			}
@@ -167,7 +167,7 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			Node* newNode = new Node();
 
 			//detect if the token is a number
-			if(isdigit(tokenList.front()[0])){
+			if(isdigit(tokenList.front()[0]) || tokenList.front()[0] == '-'){
 				newNode->doubleValue = std::stod(tokenList.front());
 				newNode->atomType = aDouble;
 			}
@@ -218,7 +218,7 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			Node* newNode = new Node();
 
 			//detect if the token is a number
-			if(isdigit(tokenList.front()[0])){
+			if(isdigit(tokenList.front()[0]) || tokenList.front()[0] == '-'){
 				newNode->doubleValue = std::stod(tokenList.front());
 				newNode->atomType = aDouble;
 			}
