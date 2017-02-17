@@ -103,12 +103,15 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 			std::cout << "ERROR: incorrect number of arguments for if" << std::endl;
 			return Expression();
 		}
-
-		if(expList[1]->boolData())
-			return expList[2];
-		else
-			return expList[3];
-				
+		Expression ifExp;
+		if(expList[1]->boolData()){
+			ifExp = *expList[2];
+			return ifExp;
+		}
+		else{
+			ifExp = *expList[3];
+			return ifExp;
+		}				
 	}
 
 /*------------------------------------------------------------------------------*/

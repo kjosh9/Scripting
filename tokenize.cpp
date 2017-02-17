@@ -206,10 +206,6 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			}
 	
 			currNode = currNode->top;
-
-			if(currNode == root){
-				break;
-			}
 		}
 		//these are branches of the current nodes
 		else{
