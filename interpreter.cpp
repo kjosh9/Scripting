@@ -92,6 +92,9 @@ Expression Interpreter::evaluate(Node* nodie){
 		nodie->doubleValue = result.doubleData();
 		nodie->atomType = aDouble;
 	}
+	else if(result.dataType() == None){
+		return Expression();
+	}
 	std::vector<Node*> emptyList;
 	nodie->branches = emptyList;
 	nodie->isLeaf = true;

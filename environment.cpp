@@ -276,8 +276,8 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 			return Expression(expList[1]->doubleData() - expList[2]->doubleData());
 		}
 		else{
-			std::cout << "Error : Too many arguments for -";
-			//throw  InterpreterSemanticError("Error: Too many arguments for -");
+			std::cout << "Error : Too many arguments for -" << std::endl;
+			throw  InterpreterSemanticError("Error: Too many arguments for -");
 			return Expression();
 		}
 	}
@@ -304,8 +304,8 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		return Expression(expList[1]->doubleData() / expList[2]->doubleData());
 	}
 	else{
+		std::cout << "Invalid Procedure" << std::endl;
 		throw InterpreterSemanticError("Error: Invalied Procedure");
-		//std::cout << "Invalid Procedure" << std::endl;
 		return Expression();
 	}
 }

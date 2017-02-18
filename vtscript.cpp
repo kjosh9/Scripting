@@ -42,7 +42,7 @@ int main(int argc, char * argv[]){
 		case 2: {
 			//check if it is the correct file type
 			if(!checkFileType(argv[1])){
-				std::cout << "ERROR: Incorrect file type" << std::endl;
+				std::cout << "Error: Incorrect file type" << std::endl;
 				return EXIT_FAILURE;
 			}
 
@@ -51,7 +51,7 @@ int main(int argc, char * argv[]){
 				interp.parse(inFile);
 			}  	
 			else{
-				std::cout << "File does not exist" << std::endl;
+				std::cout << "Error: File does not exist" << std::endl;
 				return EXIT_FAILURE;
 			}
 			break;
@@ -86,14 +86,14 @@ int main(int argc, char * argv[]){
 	}
 
 	//print out expression
-	std::cout << "(";
 	if(answer.dataType() == String)
-		std::cout << answer.stringData();
+		std::cout << "(" << answer.stringData() << ")";
 	else if(answer.dataType() == Bool)
-		std::cout << answer.boolData();
+		std::cout << "(" << answer.boolData() << ")";
 	else if(answer.dataType() == Double)
-		std::cout << answer.doubleData();
-	std::cout << ")";
+		std::cout << "(" << answer.doubleData() << ")";
+	else if(answer.dataType() == None)
+		return EXIT_FAILURE;
 
 
 	return EXIT_SUCCESS;
