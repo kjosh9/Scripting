@@ -21,19 +21,38 @@ int main(int argc, char * argv[]){
 
 	Interpreter interp;
 	Expression answer;
-	
+	std::istringstream inputStream;
 
 	switch(argc){
 		//case where there is no command line arguments
 		case 1:{
-			std::string input;
-			while(true){
+			std::string inputString;
+			std::cout << "vtscript> ";
+			Expression result;
+			while(std::getline(std::cin, inputString) && !std::cin.eof()){
+				result = Expression();
 				
-				//put into the environment?
-			
+				if(inputString.compare("") !=0){		
+					//std::cout << inputString;
+					inputStream.str(inputString);
+					interp.parse(inputStream);
+					answer = interp.eval();		
+
+					if(answer.dataType() == String)
+						std::cout << "(" << answer.stringData() << ")";
+					else if(answer.dataType() == Bool)
+						std::cout << "(" << answer.boolData() << ")";
+					else if(answer.dataType() == Double)
+						std::cout << "(" << answer.doubleData() << ")";
+					else if(answer.dataType() == None)
+						return EXIT_FAILURE;	
+				}
+				
+				std::cout << std::endl;
 				std::cout << "vtscript> ";
-				std::cin >> input;			
 			}
+			std::cout << std::endl;
+			return EXIT_SUCCESS;
 				
 			break;
 		} 
@@ -69,7 +88,6 @@ int main(int argc, char * argv[]){
 			}
 
 			//put the input string into the stream format
-			std::istringstream inputStream;
 			inputStream.str(inputString);
 
 			if(arg1.compare("-e") == 0){
