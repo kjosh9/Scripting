@@ -17,13 +17,18 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 	int close = 0;
 
 	while(input >> segment){
-	
+
 		//split this string up based on '(' and ')'
 		
 		int last = 0;
 		bool nothingSpecial = true;
 		char lastPar;
 		int i = 0;
+		if(segment[0] == ';'){
+			std::getline(input, segment);
+			//std::cout << segment << std::endl;
+			input >> segment;
+		}
 		for(i = 0; i < segment.size(); i++){
 			if(segment[i] == '('){
 				if(last == i){
@@ -70,7 +75,7 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 		if(nothingSpecial){
 			if((segment.size() > 1) && (isdigit(segment[0]) && !isdigit(segment[1]))){
 				success=false;		
-				//std::cout << "incorrect digit string" << std::endl;		
+				std::cout << "incorrect digit string" << std::endl;		
 			}	
 			data.push(segment);
 			lastPar = '-';
@@ -90,8 +95,7 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 			}
 		}
 	}
-
-	if(data.front().compare("(") != 0 ){
+	if(data.front().compare("(") != 0){
 		success = false;
 		//std::cout << "Incorrect first character" << std::endl;
 	}

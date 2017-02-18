@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "interpreter.hpp"
+#include "expression.hpp"
 
 //check the file type and return a boolean
 bool checkFileType(std::string filename){
@@ -19,7 +20,9 @@ bool checkFileType(std::string filename){
 int main(int argc, char * argv[]){
 
 	Interpreter interp;
+	Expression answer;
 	
+
 	switch(argc){
 		//case where there is no command line arguments
 		case 1:{
@@ -59,8 +62,6 @@ int main(int argc, char * argv[]){
 	
 
 			std::string arg1 = argv[1];
-
-			std::cout << arg1 << std::endl;
 			
 			std::string inputString = "";
 			for(int i = 2; i < argc; i++){
@@ -73,6 +74,7 @@ int main(int argc, char * argv[]){
 
 			if(arg1.compare("-e") == 0){
 				interp.parse(inputStream);
+				answer = interp.eval();
 			}	
 			else{	
 				std::cout <<"Incorrect input" << std::endl;
@@ -82,6 +84,16 @@ int main(int argc, char * argv[]){
 			break;
 		}	
 	}
+
+	//print out expression
+	std::cout << "(";
+	if(answer.dataType() == String)
+		std::cout << answer.stringData();
+	else if(answer.dataType() == Bool)
+		std::cout << answer.boolData();
+	else if(answer.dataType() == Double)
+		std::cout << answer.doubleData();
+	std::cout << ")";
 
 
 	return EXIT_SUCCESS;
