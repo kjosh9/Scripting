@@ -3,20 +3,48 @@
 
 Environment::Environment(){
 	
-	Expression PI = Expression((double)atan2(0,-1));
+	Expression* PI = new Expression((double)atan2(0,-1));
 	
 	addToSymbolMap("pi", PI);
+
+	operatorList.push_back("begin");
+	operatorList.push_back("if");
+	operatorList.push_back("define");
+	operatorList.push_back("not");
+	operatorList.push_back("and");
+	operatorList.push_back("or");
+	operatorList.push_back("<");
+	operatorList.push_back("<=");
+	operatorList.push_back(">");
+	operatorList.push_back(">=");
+	operatorList.push_back("=");
+	operatorList.push_back("+");
+	operatorList.push_back("-");
+	operatorList.push_back("*");
+	operatorList.push_back("/");
+
 }
 
-bool Environment::addToSymbolMap(std::string symbol, Expression exp){
+bool Environment::isOp(std::string symbol){
+
+	for(int i = 0; i < operatorList.size(); i++){
+		if(operatorList[i].compare(symbol) == 0)
+			return true;
+	}
+	return false;
+}
+
+
+bool Environment::addToSymbolMap(std::string symbol, Expression* exp){
+
+	Expression mapExp = *exp;
 
 	if(symbolMap.find(symbol) == symbolMap.end()){
-		symbolMap.insert(std::pair<std::string,Expression>(symbol, exp));
-		//std::cout << "Symbol " << symbol << " added to map" << std::endl;		
+		symbolMap.insert(std::pair<std::string,Expression>(symbol, mapExp));
 		return true;	
 	}	
 	else{
-		std::cout << "item alread in map" << std::endl;
+		throw InterpreterSemanticError("ERROR: Symbol already mapped");
 		return false;
 	}
 }
@@ -60,11 +88,21 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	// then replace with new expressions
 	if(expList[0]->stringData().compare("define") != 0){
 		for(int i = 1; i < expList.size(); i++){
-			if(expList[i]->dataType() == String){
-				Expression temExp = symbolMap[expList[i]->stringData()];
-				expList[i] = &temExp;
-				std::cout << "Looked up " << expList[i]->stringData() << "as : " ;
+			if(expList[i]->dataType() == String && !isOp(expList[i]->stringData())){
+				bool lookSucc;
+				Expression temExp = fetchExp(expList[i]->stringData(), lookSucc);
 				
+				if(lookSucc){
+	
+					std::cout << "Looked up " << expList[i]->stringData() << " as: ";
+					if(expList[i]->dataType() == String)
+						std::cout << expList[i]->boolData() << std::endl;		
+					else 
+						std::cout << expList[i]->doubleData() << std::endl;				
+					expList[i] = &temExp;	
+				}
+				else 
+					std::cout << "not in map" << std::endl;			
 			}
 		}
 	}
@@ -75,18 +113,20 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 
 
 	if(expList[0]->stringData().compare("begin") == 0){
-		//not exactly sure what to do with this
-		result = Expression(true);
-		return result;		
+		Expression begExp = &expList[expList.size()];
+		return 	begExp;
 	}
 
 
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare("define") == 0){	
 
-		if(expList.size() > 3){
-			std::cout << "ERROR: too many arguments for define" << std::endl;
-		}
+		if(expList.size() > 3)
+			throw InterpreterSemanticError("ERROR: too many arguments for define");
+		
+
+		if(isOp(expList[1]->stringData()) || expList[1]->stringData().compare("if") == 0)
+			throw InterpreterSemanticError("ERROR: Cannot redefine special form or operator");
 
 		if(addToSymbolMap(expList[1]->stringData(), expList[2])){
 			Expression defExp = *expList[2];
@@ -234,7 +274,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 			return Expression(expList[1]->doubleData() - expList[2]->doubleData());
 		}
 		else{
-			std::cout << "Too many arguments for -" << std::endl;
+			throw  InterpreterSemanticError("ERROR: Too many arguments for -");
 			return Expression();
 		}
 	}
@@ -261,7 +301,8 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		return Expression(expList[1]->doubleData() / expList[2]->doubleData());
 	}
 	else{
-		std::cout << "Invalid Procedure" << std::endl;
+		throw InterpreterSemanticError("ERROR: Invalied Procedure");
+		//std::cout << "Invalid Procedure" << std::endl;
 		return Expression();
 	}
 }

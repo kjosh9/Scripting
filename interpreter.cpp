@@ -4,6 +4,7 @@
 Interpreter::Interpreter(){
 	syntaxTree = new AST();
 	env = Environment();
+
 }
 
 
@@ -65,28 +66,37 @@ Expression Interpreter::eval(){
 //recursive function to traverse tree
 Expression Interpreter::evaluate(Node* nodie){
 
-	int branchNo = 0;
 	Expression result;
+	int branchNo = 0;
 	
-	//look to see if all the branches of the currNode are leaves
-	if(this->solvableExpression(nodie, branchNo)){
+	while(!solvableExpression(nodie, branchNo)){
+			
+		nodie = nodie->branches[branchNo];
+		std::cout << "evaluate node: " << branchNo <<std::endl;	
+			
+		result = evaluate(nodie);
 
-		//std::cout << " solvable" << std::endl;
-		
-		//first, lets form the expression from atoms
-		std::vector<Expression*> resultList = formExpression(nodie);		
-		result = env.evaluateExpression(resultList);
 	}
-	else{
-		//if it is not solvable, let's go to the part that needs
-		// simplifying
-		nodie = nodie->branches[branchNo];	
-		this->evaluate(nodie);	
+	std::vector<Expression*> resultList = formExpression(nodie);		
+	result = env.evaluateExpression(resultList);
 
-		//after its branches are simplified, then simplifiy 
-		std::vector<Expression*> resultList = formExpression(nodie);
-		result = env.evaluateExpression(resultList);
+	if(result.dataType() == String){
+		nodie->symbolValue = result.stringData();
+		nodie->atomType = aSymbol;
 	}
+	else if(result.dataType() == Bool){
+		nodie->boolValue = result.boolData();
+		nodie->atomType = aBool;
+	}
+	else if(result.dataType() == Double){
+		nodie->doubleValue = result.doubleData();
+		nodie->atomType = aDouble;
+	}
+	std::vector<Node*> emptyList;
+	nodie->branches = emptyList;
+	nodie->isLeaf = true;
+	nodie = nodie->top;
+
 	return result;
 }
 
@@ -125,8 +135,8 @@ bool Interpreter::solvableExpression(Node* currNode, int& branchNo){
 
 		branchNo = 0;		
 		if(currNode->branches.empty()){
-			std::cout << "ERROR: No branches" << std::endl;				
-			return false;		
+			//std::cout << "ERROR: No branches" << std::endl;				
+			return true;		
 		}		
 
 		for(int i = 0; i < currNode->branches.size(); i++){

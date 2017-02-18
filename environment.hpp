@@ -2,6 +2,7 @@
 #define ENVIRONMENT_HPP
 
 #include "expression.hpp"
+#include "interpreter_semantic_error.hpp"
 #include <iostream>
 #include <math.h>
 #include <map>
@@ -16,7 +17,9 @@ public:
 
 	Environment();
 
-	bool addToSymbolMap(std::string symbol, Expression exp);
+	bool isOp(std::string symbol);
+
+	bool addToSymbolMap(std::string symbol, Expression* exp);
 
 	Expression evaluateExpression(std::vector<Expression*> &expList);
 
@@ -25,6 +28,8 @@ public:
 private:
 
 	std::map<std::string, Expression> symbolMap;
+
+	std::vector<std::string> operatorList;
 
 };
 

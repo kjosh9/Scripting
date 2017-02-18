@@ -33,7 +33,7 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 				}
 				else{
 					std::string newStr = segment.substr(last, i-last); 
-					if(isdigit(newStr[0]) && !isdigit(newStr[1]))
+					if(isdigit(newStr[0]) && (!isdigit(newStr[1]) || newStr[1] == '.'))
 						success = false;					
 					data.push(newStr);
 					last = i;
@@ -53,9 +53,9 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 				}
 				else{
 					std::string newStr = segment.substr(last, i-last); 
-					if((newStr.size()>1)&&(isdigit(newStr[0]) && (!isdigit(newStr[1])))){
+					if((newStr.size()>1)&&(isdigit(newStr[0]) && (!isdigit(newStr[1]) && newStr[1] != '.'))){
 						success = false;					
-						//std::cout <<"bleh" <<std::endl;
+						std::cout <<"bleh" <<std::endl;
 					}
 					data.push(newStr);
 					last = i;
@@ -80,9 +80,9 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 			std::string newStr = segment.substr(last, i-last);
 			
 			if(newStr.compare(")")!=0 && newStr.compare("(")!=0){
-				if((newStr.size() > 1) && (isdigit(newStr[0]) && !isdigit(newStr[1]))){
+				if((newStr.size() > 1) && (isdigit(newStr[0])) && (!isdigit(newStr[1]  && newStr[1] != '.'))){
 					success=false;		
-					//std::cout << "incorrect digit string" << std::endl;		
+					std::cout << "incorrect digit string" << std::endl;		
 				}	
 	
 				data.push(newStr);
@@ -118,11 +118,10 @@ AST::~AST(){
 // placing it into the AST
 bool AST::assembleAST(std::queue<std::string> tokenList){
 
+	int depth = 0;
+
 	//assuming the tokenList is syntactically correct
 	while(!tokenList.empty()){
-		
-		//debugging help
-		//std::cout << tokenList.front() << std::endl;
 		
 		if(tokenList.front() == "(" && root == nullptr){
 			//the next entry needs to be the root			
@@ -156,6 +155,8 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			newNode->isLeaf = true;
 			root = newNode;
 			currNode = root;
+			depth = 1;
+			//std::cout << depth << std::endl;
 		
 			tokenList.pop();
 			
@@ -193,6 +194,8 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 
 			currNode->branches.push_back(newNode);
 			currNode = newNode;
+			depth++;
+			//std::cout << depth << std::endl;
 
 			tokenList.pop();		   
 		}
@@ -204,6 +207,8 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			if(currNode == root){
 				break;
 			}
+			depth--;
+			//std::cout << depth << std::endl;
 	
 			currNode = currNode->top;
 		}
@@ -236,6 +241,9 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 
 			newNode->isLeaf = true;
 			newNode->top = currNode;
+			newNode->top->isLeaf = false;
+	
+			//std::cout << depth+1 << std::endl;
 
 			currNode->branches.push_back(newNode);
 			tokenList.pop();
