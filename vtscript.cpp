@@ -8,10 +8,13 @@
 //check the file type and return a boolean
 bool checkFileType(std::string filename){
 
+	if(filename.find(".") == std::string::npos)
+		return false;
+	
 	//throws an error if there is no period
 	std::string fileType = filename.substr(filename.find("."), 4);
 	
-	if(fileType == ".vts")
+	if(fileType.compare(".vts") == 0 && !fileType.empty())
 		return true;
 	else
 		return false;
@@ -40,12 +43,18 @@ int main(int argc, char * argv[]){
 
 					if(answer.dataType() == String)
 						std::cout << "(" << answer.stringData() << ")";
-					else if(answer.dataType() == Bool)
-						std::cout << "(" << answer.boolData() << ")";
+					else if(answer.dataType() == Bool){
+						std::cout << "(";
+						if(answer.boolData())
+							std::cout << "True";
+						else 
+							std::cout << "False";
+						std::cout << ")";
+					}
 					else if(answer.dataType() == Double)
 						std::cout << "(" << answer.doubleData() << ")";
-					else if(answer.dataType() == None)
-						return EXIT_FAILURE;	
+					else if(answer.dataType() == None){}
+							
 				}
 				
 				std::cout << std::endl;
@@ -59,6 +68,7 @@ int main(int argc, char * argv[]){
 		
 		//case where the only command line argument is a file to interperet 
 		case 2: {
+			Expression sum;
 			//check if it is the correct file type
 			if(!checkFileType(argv[1])){
 				std::cout << "Error: Incorrect file type" << std::endl;
@@ -68,6 +78,7 @@ int main(int argc, char * argv[]){
 			std::ifstream inFile (argv[1]);
 			if(inFile.is_open()){	
 				interp.parse(inFile);
+				sum = interp.eval();
 			}  	
 			else{
 				std::cout << "Error: File does not exist" << std::endl;
@@ -106,8 +117,14 @@ int main(int argc, char * argv[]){
 	//print out expression
 	if(answer.dataType() == String)
 		std::cout << "(" << answer.stringData() << ")";
-	else if(answer.dataType() == Bool)
-		std::cout << "(" << answer.boolData() << ")";
+	else if(answer.dataType() == Bool){
+		std::cout << "(";
+		if(answer.boolData())
+			std::cout << "True";
+		else 
+			std::cout << "False";
+		std::cout << ")";
+	}
 	else if(answer.dataType() == Double)
 		std::cout << "(" << answer.doubleData() << ")";
 	else if(answer.dataType() == None)

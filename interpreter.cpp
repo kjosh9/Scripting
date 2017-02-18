@@ -56,7 +56,7 @@ Expression Interpreter::eval(){
 		//std::cout << "non-empty tree ";
 		result = evaluate(treeRoot);		
 	}
-
+	
 	//std::cout << "Return Expression: " << result.dataType() << std::endl;
 	return result;	
 

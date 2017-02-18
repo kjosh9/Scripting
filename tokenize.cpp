@@ -114,7 +114,7 @@ AST::AST(){
 }
 
 AST::~AST(){
-	//make sure to properly destroy this tree later
+
 }
 
 
