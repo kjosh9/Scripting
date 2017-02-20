@@ -127,8 +127,11 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		}
 		
 
-		if(isOp(expList[1]->stringData()) || expList[1]->stringData().compare("if") == 0)
-			throw InterpreterSemanticError("Error: Cannot redefine special form or operator");
+		if(isOp(expList[1]->stringData())){
+			std::cout << "Error: Cannot redefine special form or operator" << std::endl;			
+			//throw InterpreterSemanticError("Error: Cannot redefine special form or operator");		
+			return Expression();
+		}
 
 		if(addToSymbolMap(expList[1]->stringData(), expList[2])){
 			Expression defExp = *expList[2];
@@ -306,7 +309,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	else{
 		std::cout << "Invalid Procedure" << std::endl;
 		throw InterpreterSemanticError("Error: Invalied Procedure");
-		return Expression();
+		exit(EXIT_FAILURE);
 	}
 }
 
