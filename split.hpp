@@ -1,0 +1,4 @@
+
+#include <cstdlib>
+
+bool split(std::string original, std::string first, std::string second, std::string splitString);
