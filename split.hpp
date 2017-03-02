@@ -4,4 +4,4 @@
 //
 //
 //
-bool split(std::string first, std::string second);
+bool split(std::string& first, std::string& second);
