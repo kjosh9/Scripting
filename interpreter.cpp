@@ -80,7 +80,7 @@ Expression Interpreter::evaluate(Node* nodie){
 	while(!solvableExpression(nodie, branchNo)){
 			
 		nodie = nodie->branches[branchNo];
-		std::cout << "evaluate node: " << branchNo <<std::endl;	
+		//std::cout << "evaluate node: " << branchNo <<std::endl;	
 			
 		result = evaluate(nodie);
 

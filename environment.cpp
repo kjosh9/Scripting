@@ -38,12 +38,12 @@ bool Environment::isOp(std::string symbol){
 bool Environment::addToSymbolMap(std::string symbol, Expression* exp){
 
 	Expression mapExp = *exp;
-
 	if(symbolMap.find(symbol) == symbolMap.end()){
-		symbolMap.insert(std::pair<std::string,Expression>(symbol, mapExp));
+		symbolMap.insert(std::pair<std::string,Expression>(symbol, mapExp));		
 		return true;	
 	}	
 	else{
+		std::cout << "ERROR: Symbol already mapped" << std::endl;
 		throw InterpreterSemanticError("ERROR: Symbol already mapped");
 		return false;
 	}
@@ -86,15 +86,17 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 
 	//detect if any of the expressions are symbols that need mapping
 	// then replace with new expressions
-	for(int i = 1; i < expList.size(); i++){
-		if(expList[i]->dataType() == String && !isOp(expList[i]->stringData())){
-			bool lookSucc;
-			Expression temExp = fetchExp(expList[i]->stringData(), lookSucc);
+	if(expList[0]->stringData().compare("define") != 0){
+		for(int i = 1; i < expList.size(); i++){
+			if(expList[i]->dataType() == String && !isOp(expList[i]->stringData())){
+				bool lookSucc;
+				Expression temExp = fetchExp(expList[i]->stringData(), lookSucc);
 			
-			if(lookSucc)
-				expList[i] = &temExp;	
-			//else 
-			//	std::cout << "not in map" << std::endl;			
+				if(lookSucc)
+					expList[i] = &temExp;	
+				//else 
+				//	std::cout << "not in map" << std::endl;			
+			}
 		}
 	}
 	
@@ -116,13 +118,21 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		if(expList.size() > 3){
 			std::cout << "Error: too many arguments for define";
 			throw InterpreterSemanticError("ERROR: too many arguments for define");
+			exit(EXIT_FAILURE);
 		}
 		
 
+		if(expList[2]->dataType() == String && !isOp(expList[2]->stringData())){
+			bool lookSucc;
+			Expression temExp = fetchExp(expList[2]->stringData(), lookSucc);
+			if(lookSucc)
+				expList[2] = &temExp;	
+		}
+
 		if(isOp(expList[1]->stringData())){
 			std::cout << "Error: Cannot redefine special form or operator" << std::endl;			
-			//throw InterpreterSemanticError("Error: Cannot redefine special form or operator");		
-			return Expression();
+			throw InterpreterSemanticError("Error: Cannot redefine special form or operator");
+			exit(EXIT_FAILURE);
 		}
 
 		if(addToSymbolMap(expList[1]->stringData(), expList[2])){
@@ -292,14 +302,14 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	else if(expList[0]->stringData().compare("/") == 0){
 		
 		if(expList.size() > 3){
-			std::cout << "Too many arguments for /" << std::endl;	
+			//std::cout << "Too many arguments for /" << std::endl;	
 			return Expression();
 		}
 
 		return Expression(expList[1]->doubleData() / expList[2]->doubleData());
 	}
 	else{
-		std::cout << "Invalid Procedure" << std::endl;
+		//std::cout << "Invalid Procedure" << std::endl;
 		throw InterpreterSemanticError("Error: Invalied Procedure");
 		exit(EXIT_FAILURE);
 	}
