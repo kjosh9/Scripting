@@ -28,25 +28,21 @@ bool Interpreter::parse(std::istream & expression) noexcept
 // and evaluate until root is evaluated
 Expression Interpreter::eval(){
 
-	//std::cout << "Here" << std::endl;
 	syntaxTree = new AST();
-	//std::cout << "And now" << std::endl;
 	syntaxTree->assembleAST(tokenList);
+
 	//start with the root of the tree
 	Node* treeRoot = syntaxTree->getRoot();
-	//std::cout << "got root" << std::endl;
-	//std::cout << "atom value: " << treeRoot->atomType << std::endl;
 
 	Expression result;
+
 	//test if root has and branches
 	if(treeRoot->branches.empty()){
 		
-
-		if(treeRoot->atomType == aBool){
+		if(treeRoot->atomType == aBool)
 			result = Expression((bool)treeRoot->boolValue);
-			//std::cout << "Return Expression: " << result.dataType() << std::endl;
-		}
-		if(treeRoot->atomType == aSymbol){						
+
+		if(treeRoot->atomType == aSymbol){
 			bool success;
 			Expression temp = env.fetchExp((std::string)treeRoot->symbolValue, success);
 			if(success == true)
@@ -55,19 +51,13 @@ Expression Interpreter::eval(){
 				result = Expression((std::string)treeRoot->symbolValue);
 			
 		}
-		if(treeRoot->atomType == aDouble){
+		if(treeRoot->atomType == aDouble)
 			result = Expression((double)treeRoot->doubleValue);
-		}	
 	}
-	else{
-		//std::cout << "non-empty tree ";
+	else
 		result = evaluate(treeRoot);		
-	}
 	
-	
-	//std::cout << "Return Expression: " << result.dataType() << std::endl;
 	return result;	
-
 }
 
 
@@ -113,12 +103,13 @@ Expression Interpreter::evaluate(Node* nodie){
 		
 	}
 	std::vector<Expression*> resultList = formExpression(nodie);
+	
+	//try to evaluate the expression in the environment, if not catch the error
 	try{		
 		result = env.evaluateExpression(resultList);
 	}	
 	catch(InterpreterSemanticError const& ex){
-		std::cout << ex.what() << std::endl;
-		throw InterpreterSemanticError(ex);
+		throw;
 	}
 	
 	return result;
@@ -145,26 +136,26 @@ std::vector<Expression*> Interpreter::formExpression(Node* currNode){
 		}
 		else if(currNode->branches[i]->atomType == aDouble){
 			Expression* nextExp = new Expression(currNode->branches[i]->doubleValue);
-			//std::cout << "data: "<< nextExp->doubleData();
 			expList.push_back(nextExp);
 		}	
 	}
-	//std::cout << "return list ";
+
 	return expList;
 }
 
+//determine if the expression is solvable if the branches of 
+//that node are all leaves
 bool Interpreter::solvableExpression(Node* currNode, int& branchNo){
 		
-
+		//if the branch is a leaf for some reason, return true
 		if(currNode->branches.empty()){
-			std::cout << "ERROR: No branches" << std::endl;				
+			std::cout << "ERROR: No branches" << std::endl;	
 			return true;		
 		}		
 
 		for(int i = 0; i < currNode->branches.size(); i++){
 			if(currNode->branches[i]->isLeaf == false){
 				branchNo = i;	
-				//std::cout << "branch on " << i << std::endl;				
 				return false;
 			}	
 		}	

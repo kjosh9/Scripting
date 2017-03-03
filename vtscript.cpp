@@ -20,6 +20,49 @@ bool checkFileType(std::string filename){
 		return false;
 }
 
+bool REPL(){
+	Interpreter inter;
+	std::string inputString;
+	std::cout << "vtscript> ";
+	Expression result;
+
+
+	while(std::getline(std::cin, inputString) && !std::cin.eof()){
+
+		std::istringstream INstream;
+
+		if(inputString.compare("") !=0){		
+			INstream.str(inputString);
+			inter.parse(INstream);
+			try{
+				result = inter.eval();		
+			}
+			//catch in the event of an error
+			catch(const InterpreterSemanticError & ex){
+				std::cout << ex.what() << std::endl;
+				return false;
+			}
+			if(result.dataType() == String)
+				std::cout << "(" << result.stringData() << ")";
+			else if(result.dataType() == Bool){
+				std::cout << "(";
+				if(result.boolData())
+					std::cout << "True";
+				else 
+					std::cout << "False";
+				std::cout << ")";
+			}
+			else if(result.dataType() == Double)
+				std::cout << "(" << result.doubleData() << ")";
+			else if(result.dataType() == None){}
+					
+		}
+		std::cout << std::endl;
+		std::cout << "vtscript> ";
+	}
+
+}
+
 int main(int argc, char * argv[]){
 
 	Interpreter interp;
@@ -29,44 +72,13 @@ int main(int argc, char * argv[]){
 	switch(argc){
 		//case where there is no command line arguments
 		case 1:{
-			std::string inputString;
-			std::cout << "vtscript> ";
-			Expression result;
-			while(std::getline(std::cin, inputString) && !std::cin.eof()){
 
-				std::istringstream INstream;
-				result = Expression();
-
-				if(inputString.compare("") !=0){		
-					INstream.str(inputString);
-					interp.parse(INstream);
-					try{
-						answer = interp.eval();		
-					}
-					catch(const InterpreterSemanticError & ex){
-						return EXIT_FAILURE;
-					}
-					if(answer.dataType() == String)
-						std::cout << "(" << answer.stringData() << ")";
-					else if(answer.dataType() == Bool){
-						std::cout << "(";
-						if(answer.boolData())
-							std::cout << "True";
-						else 
-							std::cout << "False";
-						std::cout << ")";
-					}
-					else if(answer.dataType() == Double)
-						std::cout << "(" << answer.doubleData() << ")";
-					else if(answer.dataType() == None){}
-							
-				}
+			if(REPL()){
 				std::cout << std::endl;
-				std::cout << "vtscript> ";
+				return EXIT_SUCCESS;
 			}
-			std::cout << std::endl;
-			return EXIT_SUCCESS;
-				
+			else
+				return EXIT_FAILURE;
 			break;
 		} 
 		
@@ -86,7 +98,7 @@ int main(int argc, char * argv[]){
 					sum = interp.eval();
 				}
 				catch(InterpreterSemanticError const& ex){
-					std::cout << ex.what() << std::endl;
+					std::cout << "Catch3" << ex.what() << std::endl;
 					return EXIT_FAILURE;
 				}
 				answer = sum;
