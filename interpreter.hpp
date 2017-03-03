@@ -41,7 +41,6 @@ private:
 
 	AST* syntaxTree;
 
-	//will I need this?
 	std::queue<std::string> tokenList;
 
 	Expression result;

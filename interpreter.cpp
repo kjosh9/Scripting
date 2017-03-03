@@ -2,19 +2,24 @@
 
 
 Interpreter::Interpreter(){
-	syntaxTree = new AST();
 	env = Environment();
 
 }
-
 
 //all this does is take to input stream, parse it, and create
 // an AST of the data
 bool Interpreter::parse(std::istream & expression) noexcept
 {
+	//test is tokenlist is empty; if not, make it empty
+	while(!tokenList.empty())
+		tokenList.pop();
+
 	bool success;
 	tokenList = createList(expression, success);
-
+	
+	if(tokenList.empty())
+		std::cout << "problemo" << std::endl;
+	
 	return success;
 }
 
@@ -23,18 +28,20 @@ bool Interpreter::parse(std::istream & expression) noexcept
 // and evaluate until root is evaluated
 Expression Interpreter::eval(){
 
+	//std::cout << "Here" << std::endl;
+	syntaxTree = new AST();
+	//std::cout << "And now" << std::endl;
 	syntaxTree->assembleAST(tokenList);
-
 	//start with the root of the tree
 	Node* treeRoot = syntaxTree->getRoot();
-
+	//std::cout << "got root" << std::endl;
 	//std::cout << "atom value: " << treeRoot->atomType << std::endl;
 
 	Expression result;
-	
 	//test if root has and branches
 	if(treeRoot->branches.empty()){
-		//std::cout << "empty tree ";
+		
+
 		if(treeRoot->atomType == aBool){
 			result = Expression((bool)treeRoot->boolValue);
 			//std::cout << "Return Expression: " << result.dataType() << std::endl;
@@ -56,6 +63,7 @@ Expression Interpreter::eval(){
 		//std::cout << "non-empty tree ";
 		result = evaluate(treeRoot);		
 	}
+	
 	
 	//std::cout << "Return Expression: " << result.dataType() << std::endl;
 	return result;	

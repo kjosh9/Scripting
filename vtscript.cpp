@@ -33,12 +33,13 @@ int main(int argc, char * argv[]){
 			std::cout << "vtscript> ";
 			Expression result;
 			while(std::getline(std::cin, inputString) && !std::cin.eof()){
+
+				std::istringstream INstream;
 				result = Expression();
-				
+
 				if(inputString.compare("") !=0){		
-					//std::cout << inputString;
-					inputStream.str(inputString);
-					interp.parse(inputStream);
+					INstream.str(inputString);
+					interp.parse(INstream);
 					answer = interp.eval();		
 
 					if(answer.dataType() == String)
@@ -56,7 +57,6 @@ int main(int argc, char * argv[]){
 					else if(answer.dataType() == None){}
 							
 				}
-				
 				std::cout << std::endl;
 				std::cout << "vtscript> ";
 			}

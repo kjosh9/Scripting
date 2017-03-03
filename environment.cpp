@@ -86,26 +86,18 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 
 	//detect if any of the expressions are symbols that need mapping
 	// then replace with new expressions
-	if(expList[0]->stringData().compare("define") != 0){
-		for(int i = 1; i < expList.size(); i++){
-			if(expList[i]->dataType() == String && !isOp(expList[i]->stringData())){
-				bool lookSucc;
-				Expression temExp = fetchExp(expList[i]->stringData(), lookSucc);
-				
-				if(lookSucc){
-	
-					//std::cout << "Looked up " << expList[i]->stringData() << " as: ";
-					if(expList[i]->dataType() == String)
-						std::cout << expList[i]->boolData() << std::endl;		
-					else 
-						std::cout << expList[i]->doubleData() << std::endl;				
-					expList[i] = &temExp;	
-				}
-				else 
-					std::cout << "not in map" << std::endl;			
-			}
+	for(int i = 1; i < expList.size(); i++){
+		if(expList[i]->dataType() == String && !isOp(expList[i]->stringData())){
+			bool lookSucc;
+			Expression temExp = fetchExp(expList[i]->stringData(), lookSucc);
+			
+			if(lookSucc)
+				expList[i] = &temExp;	
+			//else 
+			//	std::cout << "not in map" << std::endl;			
 		}
 	}
+	
 	if(expList.size() == 1 && expList[0]->dataType() == String){
 		Expression temExp = symbolMap[expList[0]->stringData()];
 		return temExp;

@@ -40,7 +40,6 @@ std::queue<std::string> createList(std::istream& input, bool &success);
 class AST{
 	
 public:
-	
 	//default constructor
 	AST();
 

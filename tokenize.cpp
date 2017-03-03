@@ -1,15 +1,11 @@
 #include "tokenize.hpp"
 
-
-// (+ a ( - 4 ))
-// "(", "+", "a", "(", "-", "4", ")", ")"
-
 //split string on spaces, "(", and ")"
 std::queue<std::string> createList(std::istream& input, bool &success){
 
 	success = true;
 	std::string token;
-	std::string segment;	
+	std::string segment;
 
 	std::queue<std::string> data;
 
@@ -19,7 +15,6 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 	while(input >> segment){
 
 		//split this string up based on '(' and ')'
-		
 		int last = 0;
 		bool nothingSpecial = true;
 		char lastPar;
@@ -89,7 +84,6 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 					success=false;		
 					std::cout << "incorrect digit string" << std::endl;		
 				}	
-	
 				data.push(newStr);
 				lastPar = '-';
 			}
@@ -104,6 +98,8 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 		//std::cout << "Incorrect parenth" << std::endl;
 	}
 
+	if(data.empty())
+		std::cout << "Problemost" << std::endl;
 
 	return data;
 }
@@ -123,10 +119,9 @@ AST::~AST(){
 bool AST::assembleAST(std::queue<std::string> tokenList){
 
 	int depth = 0;
-
 	//assuming the tokenList is syntactically correct
 	while(!tokenList.empty()){
-		
+
 		if(tokenList.front() == "(" && root == nullptr){
 			//the next entry needs to be the root			
 			tokenList.pop();
@@ -264,6 +259,10 @@ bool AST::empty(){
 }
 
 Node* AST::getRoot(){
+	
+	if(empty())
+		std::cout << "Empty tree" << std::endl;
+	
 	return root; 
 }
 
