@@ -117,7 +117,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	else if(expList[0]->stringData().compare("define") == 0){	
 
 		if(expList.size() > 3){
-			std::cout << "Error: too many arguments for define";
+			//std::cout << "Error: too many arguments for define";
 			throw InterpreterSemanticError("ERROR: too many arguments for define");
 			return Expression();
 		}
@@ -131,7 +131,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		}
 
 		if(isOp(expList[1]->stringData())){
-			std::cout << "Error: Cannot redefine special form or operator" << std::endl;			
+			//std::cout << "Error: Cannot redefine special form or operator" << std::endl;			
 			throw InterpreterSemanticError("Error: Cannot redefine special form or operator");
 			return Expression();
 		}

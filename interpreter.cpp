@@ -112,9 +112,15 @@ Expression Interpreter::evaluate(Node* nodie){
 		nodie = nodie->top;
 		
 	}
-	std::vector<Expression*> resultList = formExpression(nodie);		
-	result = env.evaluateExpression(resultList);
-
+	std::vector<Expression*> resultList = formExpression(nodie);
+	try{		
+		result = env.evaluateExpression(resultList);
+	}	
+	catch(InterpreterSemanticError const& ex){
+		std::cout << ex.what() << std::endl;
+		throw InterpreterSemanticError(ex);
+	}
+	
 	return result;
 }
 

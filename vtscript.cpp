@@ -85,8 +85,8 @@ int main(int argc, char * argv[]){
 				try{
 					sum = interp.eval();
 				}
-				catch(const InterpreterSemanticError & ex){
-					std::cout << "caught" << std::endl;
+				catch(InterpreterSemanticError const& ex){
+					std::cout << ex.what() << std::endl;
 					return EXIT_FAILURE;
 				}
 				answer = sum;
