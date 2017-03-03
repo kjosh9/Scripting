@@ -68,14 +68,14 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	Expression result;
 	//std::cout << " within the env" << std::endl;
 
-	for(int i = 0; i < expList.size(); i++){
+	/*for(int i = 0; i < expList.size(); i++){
 		if(expList[i]->dataType() == String)
 			std::cout << expList[i]->stringData() << std::endl;
 		if(expList[i]->dataType() == Bool)
 			std::cout << expList[i]->boolData() << std::endl;		
 		if(expList[i]->dataType() == Double)
 			std::cout << expList[i]->doubleData() << std::endl;
-	}
+	}*/
 
 	//check to make sure the first type is correct
 	if(expList[0]->dataType() != String){
@@ -92,8 +92,9 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 				bool lookSucc;
 				Expression temExp = fetchExp(expList[i]->stringData(), lookSucc);
 			
-				if(lookSucc)
-					expList[i] = &temExp;	
+				if(lookSucc){
+					*expList[i] = temExp;
+				}
 				//else 
 				//	std::cout << "not in map" << std::endl;			
 			}
@@ -132,7 +133,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		if(isOp(expList[1]->stringData())){
 			std::cout << "Error: Cannot redefine special form or operator" << std::endl;			
 			throw InterpreterSemanticError("Error: Cannot redefine special form or operator");
-			exit(EXIT_FAILURE);
+			return Expression();
 		}
 
 		if(addToSymbolMap(expList[1]->stringData(), expList[2])){
@@ -150,14 +151,11 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 			std::cout << "Error: incorrect number of arguments for if" << std::endl;
 			return Expression();
 		}
-		Expression ifExp;
 		if(expList[1]->boolData()){
-			ifExp = *expList[2];
-			return ifExp;
+			return *expList[2];
 		}
 		else{
-			ifExp = *expList[3];
-			return ifExp;
+			return *expList[3];
 		}				
 	}
 

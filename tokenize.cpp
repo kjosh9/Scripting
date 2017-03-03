@@ -21,71 +21,72 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 		int i = 0;
 		if(segment[0] == ';'){
 			std::getline(input, segment);
-			//std::cout << segment << std::endl;
-			input >> segment;
+			//std::cout << segment << std::endl;	
 		}
-		for(i = 0; i < segment.size(); i++){
-			if(segment[i] == '('){
-				if(last == i){
-					data.push(segment.substr(last, 1));
-					last++;
-					lastPar = '(';
-				}
-				else{
-					std::string newStr = segment.substr(last, i-last); 
-					if(isdigit(newStr[0]) && (!isdigit(newStr[1]) || newStr[1] == '.'))
-						success = false;					
-					data.push(newStr);
-					last = i;
-					data.push(segment.substr(i, 1));
-					lastPar = '(';
-				}	
-				open++;	
-				nothingSpecial = false;	
-			}
-			else if(segment[i] == ')'){
-				if(last == i){
-					data.push(segment.substr(last, 1));
-					if(lastPar == '(')
-						success = false;
-					last++;
-					lastPar = ')';
-				}
-				else{
-					std::string newStr = segment.substr(last, i-last); 
-					if((newStr.size()>1)&&(isdigit(newStr[0]) && (!isdigit(newStr[1]) && newStr[1] != '.'))){
-						success = false;					
-						std::cout <<"bleh" <<std::endl;
+		else{
+			for(i = 0; i < segment.size(); i++){
+				if(segment[i] == '('){
+					if(last == i){
+						data.push(segment.substr(last, 1));
+						last++;
+						lastPar = '(';
 					}
-					data.push(newStr);
-					last = i;
-					data.push(segment.substr(i, 1));
-					lastPar = ')';
-				}		
-				close++;
-				nothingSpecial = false;
+					else{
+						std::string newStr = segment.substr(last, i-last); 
+						if(isdigit(newStr[0]) && (!isdigit(newStr[1]) || newStr[1] == '.'))
+							success = false;					
+						data.push(newStr);
+						last = i;
+						data.push(segment.substr(i, 1));
+						lastPar = '(';
+					}	
+					open++;	
+					nothingSpecial = false;	
+				}
+				else if(segment[i] == ')'){
+					if(last == i){
+						data.push(segment.substr(last, 1));
+						if(lastPar == '(')
+							success = false;
+						last++;
+						lastPar = ')';
+					}
+					else{
+						std::string newStr = segment.substr(last, i-last); 
+						if((newStr.size()>1)&&(isdigit(newStr[0]) && (!isdigit(newStr[1]) && newStr[1] != '.'))){
+							success = false;					
+							//std::cout <<"bleh" <<std::endl;
+						}
+						data.push(newStr);
+						last = i;
+						data.push(segment.substr(i, 1));
+						lastPar = ')';
+					}		
+					close++;
+					nothingSpecial = false;
+				}
+			
 			}
-			
-		}
-		if(nothingSpecial){
-			if((segment.size() > 1) && (isdigit(segment[0]) && !isdigit(segment[1]))){
-				success=false;		
-				std::cout << "incorrect digit string" << std::endl;		
-			}	
-			data.push(segment);
-			lastPar = '-';
-		}
-		else if(last!=segment.size()){
-
-			std::string newStr = segment.substr(last, i-last);
-			
-			if(newStr.compare(")")!=0 && newStr.compare("(")!=0){
-				if((newStr.size() > 1) && (isdigit(newStr[0])) && (!isdigit(newStr[1]  && newStr[1] != '.'))){
+			if(nothingSpecial){
+				if((segment.size() > 1) && (isdigit(segment[0]) && !isdigit(segment[1]))){
 					success=false;		
 					std::cout << "incorrect digit string" << std::endl;		
 				}	
-				data.push(newStr);
+				data.push(segment);
 				lastPar = '-';
+			}
+			else if(last!=segment.size()){
+
+				std::string newStr = segment.substr(last, i-last);
+			
+				if(newStr.compare(")")!=0 && newStr.compare("(")!=0){
+					if((newStr.size() > 1) && (isdigit(newStr[0])) && (!isdigit(newStr[1]  && newStr[1] != '.'))){
+						success=false;		
+						//std::cout << "incorrect digit string" << std::endl;		
+					}	
+					data.push(newStr);
+					lastPar = '-';
+				}
 			}
 		}
 	}
@@ -98,8 +99,8 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 		//std::cout << "Incorrect parenth" << std::endl;
 	}
 
-	if(data.empty())
-		std::cout << "Problemost" << std::endl;
+	if(data.empty()){}
+		//std::cout << "Problemost" << std::endl;
 
 	return data;
 }

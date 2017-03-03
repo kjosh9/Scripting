@@ -79,6 +79,7 @@ int main(int argc, char * argv[]){
 			if(inFile.is_open()){	
 				interp.parse(inFile);
 				sum = interp.eval();
+				answer = sum;
 			}  	
 			else{
 				std::cout << "Error: File does not exist" << std::endl;
@@ -126,10 +127,11 @@ int main(int argc, char * argv[]){
 		std::cout << ")";
 	}
 	else if(answer.dataType() == Double)
-		std::cout << "(" << answer.doubleData() << ")";
+		std::cout << "(" << answer.doubleData() << ")" ;
 	else if(answer.dataType() == None)
 		return EXIT_FAILURE;
 
+	std::cout << std::endl;
 
 	return EXIT_SUCCESS;
 }

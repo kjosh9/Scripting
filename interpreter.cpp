@@ -17,8 +17,8 @@ bool Interpreter::parse(std::istream & expression) noexcept
 	bool success;
 	tokenList = createList(expression, success);
 	
-	if(tokenList.empty())
-		std::cout << "problemo" << std::endl;
+	if(tokenList.empty()){}
+		//std::cout << "problemo" << std::endl;
 	
 	return success;
 }
@@ -83,24 +83,24 @@ Expression Interpreter::evaluate(Node* nodie){
 		//if the current node is not evaluatable, go to the branch that
 		//is not a leaf and evaluate.	
 		nodie = nodie->branches[branchNo];
-		std::cout << "evaluate node: " << branchNo <<std::endl;	
+		//std::cout << "evaluate node: " << branchNo <<std::endl;	
 			
 		result = evaluate(nodie);
 
 		if(result.dataType() == String){
 			nodie->symbolValue = result.stringData();
 			nodie->atomType = aSymbol;
-			std::cout << "string: " << result.stringData() << std::endl;
+			//std::cout << "string: " << result.stringData() << std::endl;
 		}
 		else if(result.dataType() == Bool){
 			nodie->boolValue = result.boolData();
 			nodie->atomType = aBool;
-			std::cout << "bool: " << result.boolData() << std::endl;
+			//std::cout << "bool: " << result.boolData() << std::endl;
 		}
 		else if(result.dataType() == Double){
 			nodie->doubleValue = result.doubleData();
 			nodie->atomType = aDouble;
-			std::cout << "double: " << result.doubleData() << std::endl;
+			//std::cout << "double: " << result.doubleData() << std::endl;
 		}
 		else if(result.dataType() == None){
 			return Expression();
@@ -158,7 +158,7 @@ bool Interpreter::solvableExpression(Node* currNode, int& branchNo){
 		for(int i = 0; i < currNode->branches.size(); i++){
 			if(currNode->branches[i]->isLeaf == false){
 				branchNo = i;	
-				std::cout << "branch on " << i << std::endl;				
+				//std::cout << "branch on " << i << std::endl;				
 				return false;
 			}	
 		}	
