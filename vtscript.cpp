@@ -20,6 +20,8 @@ bool checkFileType(std::string filename){
 		return false;
 }
 
+
+//REPL
 bool REPL(){
 	Interpreter inter;
 	std::string inputString;
@@ -40,7 +42,7 @@ bool REPL(){
 			//catch in the event of an error
 			catch(const InterpreterSemanticError & ex){
 				std::cout << ex.what() << std::endl;
-				return false;
+				//return false;
 			}
 			if(result.dataType() == String)
 				std::cout << "(" << result.stringData() << ")";
@@ -60,6 +62,7 @@ bool REPL(){
 		std::cout << std::endl;
 		std::cout << "vtscript> ";
 	}
+	return true;
 
 }
 
@@ -70,7 +73,8 @@ int main(int argc, char * argv[]){
 	std::istringstream inputStream;
 
 	switch(argc){
-		//case where there is no command line arguments
+		//case where there is no command line arguments and
+		//we enter the environment for REPL
 		case 1:{
 
 			if(REPL()){
