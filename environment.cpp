@@ -68,14 +68,14 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	Expression result;
 	//std::cout << " within the env" << std::endl;
 
-	/*for(int i = 0; i < expList.size(); i++){
+	for(int i = 0; i < expList.size(); i++){
 		if(expList[i]->dataType() == String)
 			std::cout << expList[i]->stringData() << std::endl;
 		if(expList[i]->dataType() == Bool)
 			std::cout << expList[i]->boolData() << std::endl;		
 		if(expList[i]->dataType() == Double)
 			std::cout << expList[i]->doubleData() << std::endl;
-	}*/
+	}
 
 	//check to make sure the first type is correct
 	if(expList[0]->dataType() != String){

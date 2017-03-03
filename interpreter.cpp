@@ -77,36 +77,43 @@ Expression Interpreter::evaluate(Node* nodie){
 	Expression result;
 	int branchNo = 0;
 	
+	//this finds a solvable expression
 	while(!solvableExpression(nodie, branchNo)){
-			
+		
+		//if the current node is not evaluatable, go to the branch that
+		//is not a leaf and evaluate.	
 		nodie = nodie->branches[branchNo];
-		//std::cout << "evaluate node: " << branchNo <<std::endl;	
+		std::cout << "evaluate node: " << branchNo <<std::endl;	
 			
 		result = evaluate(nodie);
 
+		if(result.dataType() == String){
+			nodie->symbolValue = result.stringData();
+			nodie->atomType = aSymbol;
+			std::cout << "string: " << result.stringData() << std::endl;
+		}
+		else if(result.dataType() == Bool){
+			nodie->boolValue = result.boolData();
+			nodie->atomType = aBool;
+			std::cout << "bool: " << result.boolData() << std::endl;
+		}
+		else if(result.dataType() == Double){
+			nodie->doubleValue = result.doubleData();
+			nodie->atomType = aDouble;
+			std::cout << "double: " << result.doubleData() << std::endl;
+		}
+		else if(result.dataType() == None){
+			return Expression();
+		}
+		std::vector<Node*> emptyList;
+		nodie->branches = emptyList;
+		nodie->isLeaf = true;
+		//go back to the upper node
+		nodie = nodie->top;
+		
 	}
 	std::vector<Expression*> resultList = formExpression(nodie);		
 	result = env.evaluateExpression(resultList);
-
-	if(result.dataType() == String){
-		nodie->symbolValue = result.stringData();
-		nodie->atomType = aSymbol;
-	}
-	else if(result.dataType() == Bool){
-		nodie->boolValue = result.boolData();
-		nodie->atomType = aBool;
-	}
-	else if(result.dataType() == Double){
-		nodie->doubleValue = result.doubleData();
-		nodie->atomType = aDouble;
-	}
-	else if(result.dataType() == None){
-		return Expression();
-	}
-	std::vector<Node*> emptyList;
-	nodie->branches = emptyList;
-	nodie->isLeaf = true;
-	nodie = nodie->top;
 
 	return result;
 }
@@ -118,7 +125,6 @@ std::vector<Expression*> Interpreter::formExpression(Node* currNode){
 	//start with the current node	
 	Expression* newExp = new Expression(currNode->symbolValue);
 	expList.push_back(newExp);
-	//std::cout << "Q" << std::endl;
 	
 	for(int i = 0; i < currNode->branches.size(); i++){
 		
@@ -144,15 +150,15 @@ std::vector<Expression*> Interpreter::formExpression(Node* currNode){
 bool Interpreter::solvableExpression(Node* currNode, int& branchNo){
 		
 
-		branchNo = 0;		
 		if(currNode->branches.empty()){
-			//std::cout << "ERROR: No branches" << std::endl;				
+			std::cout << "ERROR: No branches" << std::endl;				
 			return true;		
 		}		
 
 		for(int i = 0; i < currNode->branches.size(); i++){
 			if(currNode->branches[i]->isLeaf == false){
-				branchNo = i;					
+				branchNo = i;	
+				std::cout << "branch on " << i << std::endl;				
 				return false;
 			}	
 		}	
