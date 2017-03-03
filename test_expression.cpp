@@ -1,10 +1,8 @@
-#define CATCH_CONFIG_MAIN
-
 #include "catch.hpp"
 #include "expression.hpp"
 
 
-TEST_CASE("Test Constructor", "[Expression]"){
+TEST_CASE("Test Expression Constructor", "[Expression]"){
 
 	Expression exp;
 

@@ -1,5 +1,3 @@
-#define CATCH_CONFIG_MAIN
-
 #include "catch.hpp"
 #include "tokenize.hpp"
 #include <string>
@@ -7,7 +5,7 @@
 #include <queue>
 #include <iostream>
 
-TEST_CASE("Test Constructor", "[AST]"){
+TEST_CASE("Test AST Constructor", "[AST]"){
 
 	AST* tree = new AST();
 	REQUIRE(tree->empty());
@@ -17,7 +15,9 @@ TEST_CASE("Test Constructor", "[AST]"){
 
 TEST_CASE("Test createList w/ only spaces", "[tokenize]"){
 	
-	std::ifstream sim ("test.vts");
+	std::istringstream sim;
+
+	sim.str("( + a ( - 4 ) )");
 
 	bool success;
 	std::queue<std::string> reList = createList(sim, success);	
@@ -92,13 +92,6 @@ TEST_CASE("Test createList w/ just pi", "[tokenize]"){
 	REQUIRE(reList.empty());
 
 	REQUIRE(success == true);
-
-	tree->assembleAST(reList);
-	
-	Node* checkRoot = tree->getRoot();
-
-	REQUIRE(checkRoot->atomType == aSymbol);
-	REQUIRE(checkRoot->symbolValue.compare("pi") == 0);
 	
 }
 
@@ -121,13 +114,6 @@ TEST_CASE("Test createList w/ just True", "[tokenize]"){
 	REQUIRE(reList.empty());
 
 	REQUIRE(success == true);
-
-	tree->assembleAST(reList);
-	
-	Node* checkRoot = tree->getRoot();
-
-	REQUIRE(checkRoot->atomType == aSymbol);
-	REQUIRE(checkRoot->symbolValue.compare("True") == 0);
 	
 }
 
@@ -135,7 +121,9 @@ TEST_CASE("Test assembleAST", "[AST]"){
 
 	AST* tree = new AST();
 	
-	std::ifstream sim ("test.vts");
+	std::istringstream sim;
+
+	sim.str("( + a ( - 4 ) )");
 
 	bool success;
 

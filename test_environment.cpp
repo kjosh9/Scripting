@@ -1,5 +1,3 @@
-#define CATCH_CONFIG_MAIN
-
 #include "catch.hpp"
 #include "expression.hpp"
 #include "environment.hpp"
@@ -8,7 +6,7 @@
 #include <math.h>
 
 
-TEST_CASE("Test Constructor", "[Environment]"){
+TEST_CASE("Test Environment Constructor", "[Environment]"){
 
 	//Environment env;	
 
@@ -43,19 +41,19 @@ TEST_CASE("Test evaluation", "[Environment]"){
 	expressionList1.push_back(exp2);
 	expressionList1.push_back(exp4);
 	
-	Expression* expResult1 = env.evaluateExpression(expressionList);
+	Expression expResult1 = env.evaluateExpression(expressionList);
 	
-	REQUIRE(expResult1->doubleData() == 4.2);
+	REQUIRE(expResult1.doubleData() == 4.2);
 
 	expressionList[0] = exp0;
 
 	expResult1 = env.evaluateExpression(expressionList);
 
-	REQUIRE(expResult1->doubleData() == 4.4);
+	REQUIRE(expResult1.doubleData() == 4.4);
 
-	Expression* result = env.evaluateExpression(expressionList1);
+	Expression result = env.evaluateExpression(expressionList1);
 	
-	REQUIRE(result->doubleData() == (2+atan2(0,-1)));
+	REQUIRE(result.doubleData() == (2+atan2(0,-1)));
 
 
 	std::vector<Expression*> expressionList2;
@@ -64,9 +62,9 @@ TEST_CASE("Test evaluation", "[Environment]"){
 	expressionList2.push_back(exp8);
 	expressionList2.push_back(exp3);
 
-	Expression* result2 = env.evaluateExpression(expressionList2);
+	Expression result2 = env.evaluateExpression(expressionList2);
 
-	REQUIRE(result2->doubleData() == 2.2);	
+	REQUIRE(result2.doubleData() == 2.2);	
 
 	std::vector<Expression*> expressionList3;
 	
@@ -75,9 +73,9 @@ TEST_CASE("Test evaluation", "[Environment]"){
 	expressionList3.push_back(exp2);
 	expressionList3.push_back(exp3);
 
-	Expression* result3 = env.evaluateExpression(expressionList3);
+	Expression result3 = env.evaluateExpression(expressionList3);
 
-	REQUIRE(result3->doubleData() == 2.2+2+2.2);
+	REQUIRE(result3.doubleData() == 2.2+2+2.2);
 }
 
 
