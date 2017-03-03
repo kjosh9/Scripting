@@ -107,7 +107,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 
 
 	if(expList[0]->stringData().compare("begin") == 0){
-		Expression begExp = &expList[expList.size()];
+		Expression begExp = *expList[expList.size()-1];
 		return 	begExp;
 	}
 
