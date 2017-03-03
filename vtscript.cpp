@@ -40,8 +40,12 @@ int main(int argc, char * argv[]){
 				if(inputString.compare("") !=0){		
 					INstream.str(inputString);
 					interp.parse(INstream);
-					answer = interp.eval();		
-
+					try{
+						answer = interp.eval();		
+					}
+					catch(const InterpreterSemanticError & ex){
+						return EXIT_FAILURE;
+					}
 					if(answer.dataType() == String)
 						std::cout << "(" << answer.stringData() << ")";
 					else if(answer.dataType() == Bool){
@@ -78,7 +82,13 @@ int main(int argc, char * argv[]){
 			std::ifstream inFile (argv[1]);
 			if(inFile.is_open()){	
 				interp.parse(inFile);
-				sum = interp.eval();
+				try{
+					sum = interp.eval();
+				}
+				catch(const InterpreterSemanticError & ex){
+					std::cout << "caught" << std::endl;
+					return EXIT_FAILURE;
+				}
 				answer = sum;
 			}  	
 			else{
@@ -104,7 +114,12 @@ int main(int argc, char * argv[]){
 
 			if(arg1.compare("-e") == 0){
 				interp.parse(inputStream);
-				answer = interp.eval();
+				try{
+					answer = interp.eval();
+				}
+				catch(const InterpreterSemanticError & ex){
+					return EXIT_FAILURE;
+				}
 			}	
 			else{	
 				std::cout <<"Incorrect input" << std::endl;

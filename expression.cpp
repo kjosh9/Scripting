@@ -58,16 +58,16 @@ bool Expression::operator==(const Expression & exp) const noexcept{
 			return true;	
 		}
 		else if(exp.dataType() == Bool){
-			std::cout << "RHS: " << exp.boolData() << std::endl;
-			std::cout << "LHS: " << boolData() << std::endl;
+			//std::cout << "RHS: " << exp.boolData() << std::endl;
+			//std::cout << "LHS: " << boolData() << std::endl;
 		}
 		
 		if((exp.dataType() == Double) && (exp.doubleData() == doubleData())){
 			return true;	
 		}
 		else if(exp.dataType() == Double){
-			std::cout << "RHS: " << exp.doubleData() << std::endl;
-			std::cout << "LHS: " << doubleData() << std::endl;
+			//std::cout << "RHS: " << exp.doubleData() << std::endl;
+			//std::cout << "LHS: " << doubleData() << std::endl;
 		}
 
 		if(exp.dataType() == String){
@@ -81,9 +81,9 @@ bool Expression::operator==(const Expression & exp) const noexcept{
 		}
 	}
 	else {
-		std::cout << "incompatible types" <<std::endl;
-		std::cout << "RHS: " << exp.dataType() << std::endl;
-		std::cout << "LHS: " << dataType() << std::endl;
+		//std::cout << "incompatible types" <<std::endl;
+		//std::cout << "RHS: " << exp.dataType() << std::endl;
+		//std::cout << "LHS: " << dataType() << std::endl;
 	
 		return false;
 	}

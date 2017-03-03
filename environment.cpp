@@ -119,7 +119,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		if(expList.size() > 3){
 			std::cout << "Error: too many arguments for define";
 			throw InterpreterSemanticError("ERROR: too many arguments for define");
-			exit(EXIT_FAILURE);
+			return Expression();
 		}
 		
 
@@ -140,8 +140,10 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 			Expression defExp = *expList[2];
 			return defExp;
 		}
-		else
+		else{
 			std::cout << "error in define" << std::endl;
+			return Expression();
+		}
 	}
 
 /*------------------------------------------------------------------------------*/
@@ -177,6 +179,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		}
 		else{	
 			std::cout << "this is maybe an error in not" << std::endl;
+			return Expression();
 		}
 				
 	}
@@ -309,7 +312,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	else{
 		//std::cout << "Invalid Procedure" << std::endl;
 		throw InterpreterSemanticError("Error: Invalied Procedure");
-		exit(EXIT_FAILURE);
+		return Expression();
 	}
 }
 
