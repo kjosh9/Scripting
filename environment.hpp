@@ -17,6 +17,8 @@ public:
 
 	Environment();
 
+	~Environment();
+
 	bool isOp(std::string symbol);
 
 	bool addToSymbolMap(std::string symbol, Expression* exp);

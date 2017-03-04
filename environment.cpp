@@ -66,23 +66,12 @@ Expression Environment::fetchExp(std::string symbol, bool& success){
 Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	
 	Expression result;
-	//std::cout << " within the env" << std::endl;
-
-	/*for(int i = 0; i < expList.size(); i++){
-		if(expList[i]->dataType() == String)
-			std::cout << expList[i]->stringData() << std::endl;
-		if(expList[i]->dataType() == Bool)
-			std::cout << expList[i]->boolData() << std::endl;		
-		if(expList[i]->dataType() == Double)
-			std::cout << expList[i]->doubleData() << std::endl;
-	}*/
 
 	//check to make sure the first type is correct
 	if(expList[0]->dataType() != String){
 		std::cout << "Error: not the correct starting expression: ";	
 		//std::cout << expList[0]->dataType() << std::endl;
 	}	
-
 
 	//detect if any of the expressions are symbols that need mapping
 	// then replace with new expressions
@@ -150,7 +139,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	else if(expList[0]->stringData().compare("if") == 0){
 	
 		if(expList.size() != 4){
-			std::cout << "Error: incorrect number of arguments for if" << std::endl;
+			throw InterpreterSemanticError("Error: incorrect number of arguments for if");
 			return Expression();
 		}
 		if(expList[1]->boolData()){
@@ -166,7 +155,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 
 		Expression NotExp;
 		if(expList.size() > 2){
-			std::cout << "ERROR: too many arguments for not" << std::endl;
+			throw InterpreterSemanticError("ERROR: too many arguments for not");
 		}
 		
 		if(expList[1]->dataType() == Bool){
@@ -220,47 +209,31 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare("<=") == 0){
-
-		if(expList.size() > 3){
-			std::cout << "Error: too many arguments for <=" << std::endl;
-		}
-	
+		if(expList.size() > 3)
+			throw InterpreterSemanticError("Error: too many arguments for <=");
 		return Expression(expList[1]->doubleData() <= expList[2]->doubleData());
 	}
 
-
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare(">") == 0){
-
-		if(expList.size() > 3){
-			std::cout << "Error: too many arguments for >" << std::endl;
-		}
-	
+		if(expList.size() > 3)
+			throw InterpreterSemanticError("Error: too many arguments for >");
 		return Expression(expList[1]->doubleData() > expList[2]->doubleData());
 	}
-
-
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare(">=") == 0){
-
-		if(expList.size() > 3){
-			std::cout << "Error: too many arguments for >=" << std::endl;
-		}
-	
+		if(expList.size() > 3)
+			throw InterpreterSemanticError("Error: too many arguments for >=");
 		return Expression(expList[1]->doubleData() >= expList[2]->doubleData());
 	}
 
 
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare("=") == 0){
-
-		if(expList.size() > 3){
-			std::cout << "Error: too many arguments for =" << std::endl;
-		}
-	
+		if(expList.size() > 3)
+			throw InterpreterSemanticError("Error: too many arguments for =");
 		return Expression(expList[1]->doubleData() == expList[2]->doubleData());
 	}
-
 
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare("+") == 0){
@@ -268,10 +241,8 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		for(int i = 1; i < expList.size(); i++){
 			sum = sum + expList[i]->doubleData();
 		}
-
 		return Expression((double)sum);
 	}
-
 
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare("-") == 0){
@@ -282,7 +253,6 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 			return Expression(expList[1]->doubleData() - expList[2]->doubleData());
 		}
 		else{
-			std::cout << "Error : Too many arguments for -" << std::endl;
 			throw  InterpreterSemanticError("Error: Too many arguments for -");
 			return Expression();
 		}
@@ -306,7 +276,6 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 			//std::cout << "Too many arguments for /" << std::endl;	
 			return Expression();
 		}
-
 		return Expression(expList[1]->doubleData() / expList[2]->doubleData());
 	}
 	else{

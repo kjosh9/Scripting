@@ -1,6 +1,4 @@
 #include "expression.hpp"
-#include <iostream>
-
 
 Expression::Expression(){
 	_dataType = None;
@@ -124,6 +122,26 @@ std::string Expression::stringData() const{
 
 double Expression::doubleData() const{
 	return _doubleData;
+}
+
+//operator << 
+std::ostream& operator<<(std::ostream& out, Expression& exp){
+	
+	std::cout << "(";
+	if(exp.dataType() == String)
+		std::cout << exp.stringData();
+	else if(exp.dataType() == Bool){
+		if(exp.boolData())
+			std::cout << "True";
+		else
+			std::cout << "False";		
+	}
+	else if(exp.dataType() == Double)
+		std::cout << exp.doubleData();
+
+	std::cout << ")";
+
+	return out;
 }
 
 

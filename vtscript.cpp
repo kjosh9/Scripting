@@ -44,22 +44,8 @@ bool REPL(){
 				std::cout << ex.what() << std::endl;
 				//return false;
 			}
-			if(result.dataType() == String)
-				std::cout << "(" << result.stringData() << ")";
-			else if(result.dataType() == Bool){
-				std::cout << "(";
-				if(result.boolData())
-					std::cout << "True";
-				else 
-					std::cout << "False";
-				std::cout << ")";
-			}
-			else if(result.dataType() == Double)
-				std::cout << "(" << result.doubleData() << ")";
-			else if(result.dataType() == None){}
-					
+			std::cout << result << std::endl;			
 		}
-		std::cout << std::endl;
 		std::cout << "vtscript> ";
 	}
 	return true;
@@ -136,7 +122,8 @@ int main(int argc, char * argv[]){
 				catch(const InterpreterSemanticError & ex){
 					return EXIT_FAILURE;
 				}
-			}	
+			}
+			//print error if the flag is wrong and exit	
 			else{	
 				std::cout <<"Incorrect input" << std::endl;
 				return EXIT_FAILURE;
@@ -146,23 +133,11 @@ int main(int argc, char * argv[]){
 		}	
 	}
 
-	//print out expression
-	if(answer.dataType() == String)
-		std::cout << "(" << answer.stringData() << ")";
-	else if(answer.dataType() == Bool){
-		std::cout << "(";
-		if(answer.boolData())
-			std::cout << "True";
-		else 
-			std::cout << "False";
-		std::cout << ")";
-	}
-	else if(answer.dataType() == Double)
-		std::cout << "(" << answer.doubleData() << ")" ;
-	else if(answer.dataType() == None)
+	//print out the error and if the resulting
+	//expression if type none, exit failure
+	std::cout << answer << std::endl; 
+	if(answer.dataType() == None)
 		return EXIT_FAILURE;
-
-	std::cout << std::endl;
 
 	return EXIT_SUCCESS;
 }

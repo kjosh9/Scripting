@@ -6,6 +6,14 @@ Interpreter::Interpreter(){
 
 }
 
+Interpreter::~Interpreter(){
+
+	delete syntaxTree;
+	syntaxTree = nullptr;
+
+	
+}
+
 //all this does is take to input stream, parse it, and create
 // an AST of the data
 bool Interpreter::parse(std::istream & expression) noexcept

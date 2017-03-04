@@ -2,11 +2,17 @@
 #define EXPRESSION_HPP
 
 #include <string>
+#include <iostream>
+#include <iomanip>
+#include <stdlib.h>
 
 /*Will this will need a destuctor and a copy contructor?*/
 
 enum expType {None, Bool, String, Double};
 class Expression{
+
+	//overloading the output operator to make things easier
+	friend std::ostream& operator<<(std::ostream& out, Expression& exp);
 
 public:
 	// Default construct and Expression of type None
