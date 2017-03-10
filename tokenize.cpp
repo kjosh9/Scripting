@@ -14,6 +14,9 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 
 	while(input >> segment){
 
+		if(open < close)
+			success = false;	
+
 		//split this string up based on '(' and ')'
 		int last = 0;
 		bool nothingSpecial = true;
@@ -121,7 +124,9 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 
 	if(tokenList.empty())
 		return false;
-	
+
+	bool madeChild = false;	
+
 	//assuming the tokenList is syntactically correct
 	while(!tokenList.empty()){
 
@@ -164,7 +169,9 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 		}
 		else if(tokenList.front() == "("){
 			//the next entry needs to be a child
-			tokenList.pop();		
+			tokenList.pop();
+
+			madeChild = true;		
 	
 			if(tokenList.front() == ")")
 				return false;			
@@ -205,10 +212,12 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			//go up one node
 			tokenList.pop();
 			
-			if(currNode == root)
-				break;
-	
-			currNode = currNode->top;
+			if(currNode != root)			
+				currNode = currNode->top;
+			else if(currNode == root && !tokenList.empty() && !madeChild)
+				madeChild = false;//return false;
+			else
+				madeChild = false;
 		}
 		//these are branches of the current nodes
 		else{
