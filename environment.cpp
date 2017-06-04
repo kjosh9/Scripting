@@ -6,6 +6,7 @@ Environment::Environment(){
 	Expression* PI = new Expression((double)atan2(0,-1));
 	
 	addToSymbolMap("pi", PI);
+	delete PI;
 
 	operatorList.push_back("begin");
 	operatorList.push_back("if");
@@ -22,6 +23,13 @@ Environment::Environment(){
 	operatorList.push_back("-");
 	operatorList.push_back("*");
 	operatorList.push_back("/");
+
+}
+
+Environment::~Environment(){
+
+	symbolMap.clear();
+	
 
 }
 
@@ -43,7 +51,6 @@ bool Environment::addToSymbolMap(std::string symbol, Expression* exp){
 		return true;	
 	}	
 	else{
-		std::cout << "ERROR: Symbol already mapped" << std::endl;
 		throw InterpreterSemanticError("ERROR: Symbol already mapped");
 		return false;
 	}
