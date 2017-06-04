@@ -14,6 +14,9 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 
 	while(input >> segment){
 
+		if(open < close)
+			success = false;	
+
 		//split this string up based on '(' and ')'
 		int last = 0;
 		bool nothingSpecial = true;
@@ -99,8 +102,8 @@ std::queue<std::string> createList(std::istream& input, bool &success){
 		//std::cout << "Incorrect parenth" << std::endl;
 	}
 
-	if(data.empty()){}
-		//std::cout << "Problemost" << std::endl;
+	if(data.empty())
+		success = false;
 
 	return data;
 }
@@ -119,7 +122,11 @@ AST::~AST(){
 // placing it into the AST
 bool AST::assembleAST(std::queue<std::string> tokenList){
 
-	int depth = 0;
+	if(tokenList.empty())
+		return false;
+
+	bool madeChild = false;	
+
 	//assuming the tokenList is syntactically correct
 	while(!tokenList.empty()){
 
@@ -127,6 +134,8 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			//the next entry needs to be the root			
 			tokenList.pop();
 
+			if(tokenList.front() == ")")
+				return false;
 			//create new node and make it root 
 			Node* newNode = new Node();
 
@@ -155,16 +164,18 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			newNode->isLeaf = true;
 			root = newNode;
 			currNode = root;
-			depth = 1;
-			//std::cout << depth << std::endl;
-		
 			tokenList.pop();
 			
 		}
 		else if(tokenList.front() == "("){
 			//the next entry needs to be a child
-			tokenList.pop();		
-			
+			tokenList.pop();
+
+			madeChild = true;		
+	
+			if(tokenList.front() == ")")
+				return false;			
+
 			Node* newNode = new Node();
 
 			//detect if the token is a number
@@ -194,9 +205,6 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 
 			currNode->branches.push_back(newNode);
 			currNode = newNode;
-			depth++;
-			//std::cout << depth << std::endl;
-
 			tokenList.pop();		   
 		}
 		else if(tokenList.front() == ")"){
@@ -204,13 +212,12 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			//go up one node
 			tokenList.pop();
 			
-			if(currNode == root){
-				break;
-			}
-			depth--;
-			//std::cout << depth << std::endl;
-	
-			currNode = currNode->top;
+			if(currNode != root)			
+				currNode = currNode->top;
+			else if(currNode == root && !tokenList.empty() && !madeChild)
+				madeChild = false;//return false;
+			else
+				madeChild = false;
 		}
 		//these are branches of the current nodes
 		else{
@@ -242,13 +249,13 @@ bool AST::assembleAST(std::queue<std::string> tokenList){
 			newNode->isLeaf = true;
 			newNode->top = currNode;
 			newNode->top->isLeaf = false;
-	
-			//std::cout << depth+1 << std::endl;
 
 			currNode->branches.push_back(newNode);
 			tokenList.pop();
 		}
 	}
+
+	return !empty();
 }
 
 bool AST::empty(){
@@ -261,8 +268,10 @@ bool AST::empty(){
 
 Node* AST::getRoot(){
 	
-	if(empty())
+	if(empty()){
 		std::cout << "Empty tree" << std::endl;
+		//exit();
+	}
 	
 	return root; 
 }

@@ -8,10 +8,9 @@ Interpreter::Interpreter(){
 
 Interpreter::~Interpreter(){
 
-	delete syntaxTree;
-	syntaxTree = nullptr;
-
-	
+	/*if(!syntaxTree->empty())
+		delete syntaxTree;
+	syntaxTree = nullptr;*/
 }
 
 //all this does is take to input stream, parse it, and create
@@ -25,8 +24,8 @@ bool Interpreter::parse(std::istream & expression) noexcept
 	bool success;
 	tokenList = createList(expression, success);
 	
-	if(tokenList.empty()){}
-		//std::cout << "problemo" << std::endl;
+	if(tokenList.empty())
+		return false;
 	
 	return success;
 }
@@ -37,7 +36,8 @@ bool Interpreter::parse(std::istream & expression) noexcept
 Expression Interpreter::eval(){
 
 	syntaxTree = new AST();
-	syntaxTree->assembleAST(tokenList);
+	if(syntaxTree->assembleAST(tokenList) == false)
+		throw InterpreterSemanticError("Error: Invalid argument");
 
 	//start with the root of the tree
 	Node* treeRoot = syntaxTree->getRoot();

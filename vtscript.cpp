@@ -82,13 +82,16 @@ int main(int argc, char * argv[]){
 			}
 
 			std::ifstream inFile (argv[1]);
-			if(inFile.is_open()){	
-				interp.parse(inFile);
+			if(inFile.is_open()){
+				if(!interp.parse(inFile)){
+					std::cout << "Error: Cannot parse file" << std::endl;
+					return EXIT_FAILURE;
+				}
 				try{
 					sum = interp.eval();
 				}
 				catch(InterpreterSemanticError const& ex){
-					std::cout << "Catch3" << ex.what() << std::endl;
+					std::cout << ex.what() << std::endl;
 					return EXIT_FAILURE;
 				}
 				answer = sum;
@@ -115,11 +118,15 @@ int main(int argc, char * argv[]){
 			inputStream.str(inputString);
 
 			if(arg1.compare("-e") == 0){
-				interp.parse(inputStream);
+				if(interp.parse(inputStream) == false){
+					std::cout << "Error: cannot parse file" << std::endl;
+					return EXIT_FAILURE;
+				}
 				try{
 					answer = interp.eval();
 				}
 				catch(const InterpreterSemanticError & ex){
+					std::cout << ex.what() << std::endl;
 					return EXIT_FAILURE;
 				}
 			}

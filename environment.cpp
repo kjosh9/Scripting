@@ -24,6 +24,13 @@ Environment::Environment(){
 	operatorList.push_back("*");
 	operatorList.push_back("/");
 
+	delete PI;
+
+}
+
+Environment::~Environment(){
+
+	
 }
 
 Environment::~Environment(){
@@ -113,7 +120,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	else if(expList[0]->stringData().compare("define") == 0){	
 
 		if(expList.size() > 3){
-			//std::cout << "Error: too many arguments for define";
+			std::cout << "Error: too many arguments for define";
 			throw InterpreterSemanticError("ERROR: too many arguments for define");
 			return Expression();
 		}
@@ -161,9 +168,8 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 	else if(expList[0]->stringData().compare("not") == 0){
 
 		Expression NotExp;
-		if(expList.size() > 2){
+		if(expList.size() > 2)
 			throw InterpreterSemanticError("ERROR: too many arguments for not");
-		}
 		
 		if(expList[1]->dataType() == Bool){
 			NotExp = Expression((bool)!expList[1]->boolData());
@@ -207,9 +213,8 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 /*------------------------------------------------------------------------------*/
 	else if(expList[0]->stringData().compare("<") == 0){
 		
-		if(expList.size() > 3){
-			std::cout << "Error: too many arguments for <" << std::endl;
-		}
+		if(expList.size() > 3)
+			throw InterpreterSemanticError("Error: too many arguments for <");
 		return Expression(expList[1]->doubleData() < expList[2]->doubleData());
 	}
 
@@ -261,7 +266,7 @@ Expression Environment::evaluateExpression(std::vector<Expression*> &expList){
 		}
 		else{
 			throw  InterpreterSemanticError("Error: Too many arguments for -");
-			return Expression();
+			//return Expression();
 		}
 	}
 
