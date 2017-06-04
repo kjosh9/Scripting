@@ -24,13 +24,6 @@ Environment::Environment(){
 	operatorList.push_back("*");
 	operatorList.push_back("/");
 
-	delete PI;
-
-}
-
-Environment::~Environment(){
-
-	
 }
 
 Environment::~Environment(){
